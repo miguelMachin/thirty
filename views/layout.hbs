@@ -8,10 +8,172 @@
   <link rel="stylesheet" href="https://www.w3schools.com/lib/w3-theme-blue-grey.css">
   <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Open+Sans'>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
   <style>
   html,body,h1,h2,h3,h4,h5 {font-family: "Open Sans", sans-serif}
+  #updateErrorName , #updateErrorPasswd{
+    text-align: center;
+    padding-bottom: 5%; 
+  }
+  .error {
+    color:red;
+  }
+  .correcto {
+    color:green;
+  }
+  .menuLateral ul{
+    width: 100%;
+  }
+  .menuLateral li{
+    width: 100%;
+    padding-top:5px;
+    padding-bottom:5px; 
+    list-style:none;
+    border-radius: 4px;
+    color:#000;
+    height: 40px;
+    cursor: pointer;
+  }
+  .liMenu{
+    font-size:12px; 
+    font-weight: normal;
+  }
+  .liMenuSelect{
+     font-size:15px; 
+     font-weight: bold;
+    
+  }
   </style>
+  <script>
+    function validation(){
+      let isOk = true;
+      let name = document.getElementById("name");
+      let email = document.getElementById("email");
+      let paswd = document.getElementById("passwd");
+      let passwdRepe = document.getElementById("passwdRepe");
+      let city = document.getElementById("city");
+      if (name.value == "" ){
+        name.style.borderColor= "red";
+        isOk = false;
+      }
+      if (email.value == "" ){
+        email.style.borderColor= "red";
+        isOk = false;
+      }
+      if (passwd.value == "" ){
+        passwd.style.borderColor= "red";
+        isOk = false;
+      }
+      if (passwdRepe.value == "" || passwdRepe.value != paswd.value ){
+        passwdRepe.style.borderColor= "red";
+        isOk = false;
+      }
+      if (city.value == "" ){
+        city.style.borderColor= "red";
+        isOk = false;
+      }
+      if (isOk == false){
+
+        document.getElementById("message").innerHTML = "<span style=\"color:red\">Los campos no pueden estar vacios y las contraseñas deben ser iguales</span>";
+      }
+      return isOk;
+    }
+
+    function updateName(){
+      let name = document.getElementById("name");
+      name.style.borderColor="#ced4da";
+      if (name.value == ""){
+          name.style.borderColor="red";
+      }else{
+        let data = {name:name.value};
+        $.ajax({
+              type: "POST",
+              url: "updateName",
+              data: data,
+              success: function(res){
+                  document.getElementById("updateErrorName").innerHTML = res;
+                  document.getElementById("showName").innerHTML = name.value;
+              }
+        });
+      }
+    }
+
+    function updatePasswd(){
+      let oldPasswd = document.getElementById("oldPasswd");
+      let newPasswd = document.getElementById("newPasswd");
+      let repeatPasswd = document.getElementById("repeatPasswd");
+
+      oldPasswd.style.borderColor="#ced4da";
+      newPasswd.style.borderColor="#ced4da";
+      repeatPasswd.style.borderColor="#ced4da";
+      
+      if(oldPasswd.value == "" || newPasswd.value == "" || repeatPasswd.value == "" ){
+        oldPasswd.style.borderColor="red";
+        newPasswd.style.borderColor="red";
+        repeatPasswd.style.borderColor="red";
+        document.getElementById("errSpan").innerHTML = "Los campos no pueden estar vacios";
+      }else{
+          if (newPasswd.value != repeatPasswd.value){
+            repeatPasswd.style.borderColor="red";
+            document.getElementById("errSpan").innerHTML = "Las Contraseñas debe ser iguales"; 
+          }else{
+             let data = {oldPasswd:oldPasswd.value,newPasswd:newPasswd.value,repeatPasswd:repeatPasswd.value};
+              $.ajax({
+              type: "POST",
+              url: "updatePasswd",
+              data: data,
+              success: function(res){
+                document.getElementById("updateErrorPasswd").innerHTML = res;
+              }
+            });
+          }
+      }
+    }
+    
+    function changeForm(id){
+      let opt = document.getElementsByTagName("li");
+      for(let i = 0; i < opt.length; i++){
+        opt[i].className = "liMenu"
+      }
+      let forModifyPasswd = document.getElementById("forModifyPasswd");
+      let forModifyName = document.getElementById("forModifyName");
+      let forModifyInterests = document.getElementById("forModifyInterests");
+      
+      if(id == "liName"){
+        console.log("liName");
+        forModifyName.style.visibility = "visible";
+        forModifyName.style.display = "block";
+        forModifyPasswd.style.visibility = "hidden";
+        forModifyPasswd.style.display = "none";
+        forModifyInterests.style.visibility = "hidden";
+        forModifyInterests.style.display = "none";
+        let liName = document.getElementById("liName");
+        liName.className = "liMenuSelect";
+      }
+       if(id == "liPasswd"){
+        forModifyName.style.visibility = "hidden";
+        forModifyName.style.display = "none";
+        forModifyPasswd.style.visibility = "visible";
+        forModifyPasswd.style.display = "block";
+        forModifyInterests.style.visibility = "hidden";
+        forModifyInterests.style.display = "none";
+        let liPasswd = document.getElementById("liPasswd");
+        liPasswd.className = "liMenuSelect";
+      }
+       if(id == "liInterest"){
+        forModifyName.style.visibility = "hidden";
+        forModifyName.style.display = "none";
+        forModifyPasswd.style.visibility = "hidden";
+        forModifyPasswd.style.display = "none";
+        forModifyInterests.style.visibility = "visible";
+        forModifyInterests.style.display = "block";
+        let liInterest = document.getElementById("liInterest");
+        liInterest.className = "liMenuSelect";
+      }
+
+    } 
+  </script>
 </head>
     {{{body}}}
 

@@ -2,8 +2,18 @@ const express = require('express');
 const router = express.Router();
 
 const redSocial = require('./../controller/redSocialController');
+/*const multer = require('multer');
+const upload = multer({dest: 'uploads/'});*/
 
 /* GET home page. */
 router.get('/', redSocial.initApp);
-router.post('/login', redSocial.login);
+router.post('/principal', redSocial.login);
+router.get('/vistaPrincipal', redSocial.vistaPrincipal);
+router.get('/vistaRegistro', redSocial.vistaRegistro);
+router.post('/registrar', redSocial.registrar);
+router.get('/vistaUpdate', redSocial.vistaUpdate);
+router.post('/updateName', redSocial.updateName);
+router.post('/updatePasswd', redSocial.updatePasswd);
+
+
 module.exports = router;

@@ -1,0 +1,119 @@
+<body class="w3-theme-l5">
+<!-- Navbar -->
+<div class="w3-top">
+ <div class="w3-bar w3-theme-d2 w3-left-align w3-large">
+  <a class="w3-bar-item w3-button w3-hide-medium w3-hide-large w3-right w3-padding-large w3-hover-white w3-large w3-theme-d2" href="javascript:void(0);" onclick="openNav()"><i class="fa fa-bars"></i></a>
+  <a href="/vistaPrincipal" class="w3-bar-item w3-button w3-padding-large w3-theme-d4"><i class="fa fa-home w3-margin-right"></i>Logo</a>
+  <a href="#" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white" title="News"><i class="fa fa-globe"></i></a>
+  <a href="/vistaUpdate" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white" title="Account Settings"><i class="fa fa-user"></i></a>
+  <a href="#" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white" title="Messages"><i class="fa fa-envelope"></i></a>
+  <div class="w3-dropdown-hover w3-hide-small">
+    <button class="w3-button w3-padding-large" title="Notifications"><i class="fa fa-bell"></i><span class="w3-badge w3-right w3-small w3-green">3</span></button>     
+    <div class="w3-dropdown-content w3-card-4 w3-bar-block" style="width:300px">
+      <a href="#" class="w3-bar-item w3-button">One new friend request</a>
+      <a href="#" class="w3-bar-item w3-button">John Doe posted on your wall</a>
+      <a href="#" class="w3-bar-item w3-button">Jane likes your post</a>
+    </div>
+  </div>
+  <a href="#" class="w3-bar-item w3-button w3-hide-small w3-right w3-padding-large w3-hover-white" title="My Account">
+    <img src="/w3images/avatar2.png" class="w3-circle" style="height:23px;width:23px" alt="Avatar">
+  </a>
+ </div>
+</div>
+
+<!-- Navbar on small screens -->
+<div id="navDemo" class="w3-bar-block w3-theme-d2 w3-hide w3-hide-large w3-hide-medium w3-large">
+  <a href="#" class="w3-bar-item w3-button w3-padding-large">Link 1</a>
+  <a href="#" class="w3-bar-item w3-button w3-padding-large">Link 2</a>
+  <a href="#" class="w3-bar-item w3-button w3-padding-large">Link 3</a>
+  <a href="#" class="w3-bar-item w3-button w3-padding-large">My Profile</a>
+</div>
+<!-- Page Container -->
+<div class="w3-container w3-content" style="max-width:1400px;margin-top:80px">    
+  <!-- The Grid -->
+  <div class="w3-row">
+    <!-- Left Column -->
+    <div class="w3-col m3">
+      <!-- Profile -->
+      <div class="w3-card w3-round w3-white">
+        <div class="w3-container">
+         <h4 id="showName" class="w3-center">{{user.name}}</h4>
+         <p class="w3-center"><img src="/w3images/avatar3.png" class="w3-circle" style="height:106px;width:106px" alt="Avatar"></p>
+         <hr>
+         <p><i class="fa fa-pencil fa-fw w3-margin-right w3-text-theme"></i> {{user.mood}}</p>
+         <p><i class="fa fa-home fa-fw w3-margin-right w3-text-theme"></i> {{user.city}},{{user.country}}</p>
+         <p><i class="fa fa-birthday-cake fa-fw w3-margin-right w3-text-theme"></i> {{user.mood}}</p>
+        </div>
+      </div>
+      <br>
+      
+      
+      
+      <!-- Interests --> 
+      <div class="w3-card w3-round w3-white w3-hide-small">
+        <div class="menuLateral">
+            <ul>
+                <li id="liName" class="liMenuSelect" onclick="changeForm(this.id)">Nombre</li>
+                <li id="liPasswd" class="liMenu" onclick="changeForm(this.id)">Contraseña</li>
+                <li id="liInterest" class="liMenu" onclick="changeForm(this.id)">Estado</li>
+            </ul>
+        </div>
+      </div>
+      <br>
+      
+    <!-- End Left Column -->
+    </div>
+    
+    <!-- Middle Column -->
+    <div class="w3-col m7">
+        <div id="forModifyPasswd" style="visibility: hidden; display:none;" class="w3-container w3-card w3-white w3-round w3-margin">
+            <form>
+                 <div class="form-group">
+                    <label for="oldPasswd">Antigua Contraseña</label>
+                    <input name="oldPasswd" type="password" class="form-control" id="oldPasswd" aria-describedby="passwd" >
+                    <hr>
+                    <label for="newPasswd">Contraseña</label>
+                    <input name="newPasswd" type="password" class="form-control" id="newPasswd" aria-describedby="passwd" >
+                    <label for="repeatPasswd">Nueva Contraseña</label>
+                    <input name="repeatPasswd" type="password" class="form-control" id="repeatPasswd" aria-describedby="passwd" >
+                    <br>
+                    <input class="btn btn-primary" type="button" onclick="updatePasswd()" value = "Actualzar">
+                </div>
+            </form>
+            <div id="updateErrorPasswd"><span id="errorspan" class="error"></span></div>
+        </div>
+        <div id="forModifyName" style="visibility: visible; display:block;" class="w3-container w3-card w3-white w3-round w3-margin">
+            <form>
+                 <div class="form-group">
+                    <label for="nombre">Nombre Completo</label>
+                    <input name="name" type="text" class="form-control" id="name" aria-describedby="nombre" placeholder="nombre Completo" value="{{user.name}}" >
+                    <br>
+                    <input class="btn btn-primary" type="button" onclick="updateName()" value = "Actualzar">
+                </div>
+            </form>
+             <div id="updateErrorName"><span id="errorspan" class="error"></span></div>
+        </div>
+        <div id="forModifyInterests" style="visibility: hidden; display:none;" class="w3-container w3-card w3-white w3-round w3-margin">
+               <form>
+                 <div class="form-group">
+                    <label for="nombre">Estado</label>
+                    <input name="name" type="text" class="form-control" id="mood" aria-describedby="nombre" placeholder="nombre Completo" value={{user.mood}}>
+                    <br>
+                    <input class="btn btn-primary" type="button" onclick="updateName()" value = "Actualzar">
+                </div>
+            </form>
+             <div id="updateErrorName"><span id="errorspan" class="error"></span></div>
+        </div>
+      </div>
+     
+      
+    <!-- End Middle Column -->
+    
+    </div>
+    
+    
+  <!-- End Grid -->
+  </div>
+  
+<!-- End Page Container -->
+</div>
