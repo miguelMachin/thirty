@@ -13,7 +13,8 @@ router.get('/vistaRegistro', redSocial.vistaRegistro);
 router.post('/registrar', redSocial.registrar);
 router.get('/vistaUpdate', redSocial.vistaUpdate);
 router.post('/updateName', redSocial.updateName);
+router.post('/updateMood', redSocial.updateMood);
 router.post('/updatePasswd', redSocial.updatePasswd);
-
+router.post('/updateAvatar', redSocial.updateAvatar);
 
 module.exports = router;

@@ -11,14 +11,6 @@ const country = {"SP":"España","UK":"Reino Unido","GER":"Alemania"};
 //const upload = multer({dest: 'uploads/'}); 
 
 //const formidable = require('formidable');
-//const fs = require('fs');
-/*function getUser(req,res){
-    Usuario.find((err,usuarios)=>{
-        console.log(usuarios.length);
-        if(err) throw err;
-        res.render('index',{usuarios:usuarios});
-      });
-}*/
 function initApp(req,res) {
     res.render("index",{message:""});
 
@@ -27,19 +19,21 @@ function initApp(req,res) {
 function login(req,res){
     let email = req.body.email;
     let passwd = req.body.passwd;
-    User.find( {$and: [{email:email},{passwd:passwd}]} ,function(err,user){
-       // console.log(err);
-        if(err) 
-           throw err;
-
-        if (user.length > 0){
+    User.find({$and: [{email:email},{passwd:passwd}]} ,function(err,user){
+        if (err) console.log(err);
+        if (user.length > 0 ){
             req.session.user = user[0];
             user = user[0];
-           res.render('principal',{user:user});
+            if (user.ext == ""){
+                user.ext = "avatarDef.png"
+            }else{
+                user.ext = user._id +"."+user.ext;
+            }
+            res.render('principal',{user:user});
         }else{
             res.render("index",{message:"USUARIO O CONTRASEÑA INCORRECTO",status:"error"});
-        }   
-    });
+        }
+     });
 }
 
 function vistaRegistro(req,res){
@@ -48,59 +42,6 @@ function vistaRegistro(req,res){
 }
 
 function registrar(req,res){
-    //var form = new formidable.IncomingForm()
-   // form.uploadDir = "./dir";
-    //res.render("registro",{message:""});
-   //s console.log(req.body.name);
-    //console.log(req.body);
-///console.log(req.body.image);
-    //let name = req.body.name;
-    //let passwd = req.body.passwd;
-    //let image = req.files;
-    //console.log(name);
-    //console.log(passwd);
-    //console.log(image);
-   // console.log(req.body);
-    //console.log(req.files.img);
-    //console.log(req.files.img.name);
-    //sres.render("prueba",{datos:req});
-    //console.log(image2);
-    /*var tmp_path = req.body.image.path;
-    console.log(tmp_path);*/
-   /* if (req.files){
-        let file = req.files.img,
-        img = file.name;
-        let uploadpath ='../uploads/' + img;
-        file.mv(uploadpath,function(err){
-            if(err){
-                console.log(err);
-            }else{
-                console.log("good");
-            }
-        })
-    };*/
-    
-
-
-    //let encodedData = base64.encode(req.file);
-    //console.log(encodedData);
-   // let decodedData = base64.decode(encodedData);
-   // console.log(decodedData);
-    //let imageAsBase64 = fs.readFileSync(req.file, 'base64');
-    //console.log(imageAsBase64);
-    //console.log(req.file);
-   //console.log(upload.single('img'));
-  /* fs.readFile(req.file.path, function(err, data) {
-        console.log(data);
-        let encodedData = base64.encode(data);
-        let decodedData = base64.decode(encodedData);
-        res.render("prueba",{datos:decodedData});  
-    });*/ 
-    //let test = {name:req.body.name,passwd:req.body.passwd,photo:req.file}; 
-    //User.insert(test);
-    //res.render("prueba",{datos:req}); 
-
-
     User.find( {email:req.body.email} ,function(err,user){
         if(err) 
            throw err;
@@ -116,12 +57,15 @@ function registrar(req,res){
                 city:req.body.city,
                 mood:"Sin Estado",
                 favorites: [],
-                interests: req.body.interests
+                interests: req.body.interests,
+                ext:""
             });
             insertUser.save(function(error) {
-                    res.render("registro",{message:"Registrado Correctamente",interests:interests,country:country,status:"correcto"});
                  if (error) {
-                      console.error(error);
+                     console.log(error);
+                    res.render("registro",{message:"Problemas al registrar",interests:interests,country:country,status:"error"});  
+                 }else{
+                    res.render("registro",{message:"Registrado Correctamente",interests:interests,country:country,status:"correcto"});  
                  }
              });
         }   
@@ -136,7 +80,7 @@ function vistaPrincipal(req ,res){
     }
 
 }
-
+/*
 function existInterest(value,array){
     for (let i = 0; i < array.length; i++) {
         if(array[i] == value){
@@ -145,17 +89,12 @@ function existInterest(value,array){
     }
     return false;
 }
-
+*/
 function vistaUpdate (req, res){
     if (req.session.user === undefined){
         res.redirect("localhost:3000");
     }else{
-        User.find( {email:req.session.user.email} ,function(err,user){
-            if (err) throw err;
-            if (user.length > 0 ){
-               res.render("vistaUpdate",{user:user[0],message:""});
-            }
-        });  
+        res.render("vistaUpdate",{user:req.session.user,message:""});     
     }
 }
 
@@ -167,6 +106,19 @@ function updateName (req,res){
             res.render("respuestaVistaUpdate",{message:"Problemas al intentar actualizar",status:"error"});
         }else{
             req.session.user.name = req.body.name;
+            res.render("respuestaVistaUpdate",{message:"Actualizado Correctamennte",status:"correcto"});
+        }
+    });
+}
+
+function updateMood (req,res){
+    console.log(req.body.mood);
+    User.update({email: req.session.user.email }, { $set: { mood: req.body.mood }}, function(err,user){
+        if (err) {
+            throw err;
+            res.render("respuestaVistaUpdate",{message:"Problemas al intentar actualizar",status:"error"});
+        }else{
+            req.session.user.mood = req.body.mood;
             res.render("respuestaVistaUpdate",{message:"Actualizado Correctamennte",status:"correcto"});
         }
     });
@@ -204,6 +156,23 @@ function updatePasswd (req, res){
     }
 }
 
+function updateAvatar(req,res){
+    let ext = req.file.originalname.split(".");
+    let user = req.session.user;
+    user.ext = user._id+"."+ext[1];
+    fs.rename(req.file.path,"public/images/"+user._id+"."+ext[1]);
+    User.update({email: user.email }, { $set: { ext: ext[1] }}, function(err,user){
+        if (err) {
+            console.log(err);
+        }
+        else{
+            //user.ext = user._id+"."+ext[1];;
+            res.render("respuestaVistaUpdate",{message:"Actualizado Correctamennte",status:"correcto"});
+        }      
+            
+    });
+    
+}
 
 module.exports = {
    // getUser
@@ -214,5 +183,7 @@ module.exports = {
    vistaUpdate,
    updatePasswd,
    vistaPrincipal,
-   updateName
+   updateName,
+   updateAvatar,
+   updateMood
 };

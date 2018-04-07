@@ -9,7 +9,8 @@ let userSchema = new Schema({
     city:{type:String},
     mood:{type:String},
     favorites: [],
-    interests: []
+    interests: [],
+    ext : {type:String}
 },{versionKey: false });
 
 let User = mongoose.model('users',userSchema);

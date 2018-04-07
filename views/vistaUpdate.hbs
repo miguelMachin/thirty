@@ -38,11 +38,11 @@
       <div class="w3-card w3-round w3-white">
         <div class="w3-container">
          <h4 id="showName" class="w3-center">{{user.name}}</h4>
-         <p class="w3-center"><img src="/w3images/avatar3.png" class="w3-circle" style="height:106px;width:106px" alt="Avatar"></p>
+          <p class="w3-center"><img src="/images/{{user.ext}}" class="w3-circle" style="height:106px;width:106px" alt="Avatar"></p>
          <hr>
          <p><i class="fa fa-pencil fa-fw w3-margin-right w3-text-theme"></i> {{user.mood}}</p>
          <p><i class="fa fa-home fa-fw w3-margin-right w3-text-theme"></i> {{user.city}},{{user.country}}</p>
-         <p><i class="fa fa-birthday-cake fa-fw w3-margin-right w3-text-theme"></i> {{user.mood}}</p>
+         <p><i class="fa fa-birthday-cake fa-fw w3-margin-right w3-text-theme"></i> <span id="showMood">{{user.mood}}</span></p>
         </div>
       </div>
       <br>
@@ -55,7 +55,8 @@
             <ul>
                 <li id="liName" class="liMenuSelect" onclick="changeForm(this.id)">Nombre</li>
                 <li id="liPasswd" class="liMenu" onclick="changeForm(this.id)">Contraseña</li>
-                <li id="liInterest" class="liMenu" onclick="changeForm(this.id)">Estado</li>
+                <li id="liMood" class="liMenu" onclick="changeForm(this.id)">Estado</li>
+                <li id="liAvatar" class="liMenu" onclick="changeForm(this.id)">Avatar</li>
             </ul>
         </div>
       </div>
@@ -80,7 +81,7 @@
                     <input class="btn btn-primary" type="button" onclick="updatePasswd()" value = "Actualzar">
                 </div>
             </form>
-            <div id="updateErrorPasswd"><span id="errorspan" class="error"></span></div>
+            <div id="updateErrorPasswd"><span id="errSpan" class="errSpan error"></span></div>
         </div>
         <div id="forModifyName" style="visibility: visible; display:block;" class="w3-container w3-card w3-white w3-round w3-margin">
             <form>
@@ -91,19 +92,31 @@
                     <input class="btn btn-primary" type="button" onclick="updateName()" value = "Actualzar">
                 </div>
             </form>
-             <div id="updateErrorName"><span id="errorspan" class="error"></span></div>
+             <div id="updateErrorName"><span id="errSpan" class="errSpan error"></span></div>
         </div>
-        <div id="forModifyInterests" style="visibility: hidden; display:none;" class="w3-container w3-card w3-white w3-round w3-margin">
+        <div id="forModifyMood" style="visibility: hidden; display:none;" class="w3-container w3-card w3-white w3-round w3-margin">
                <form>
                  <div class="form-group">
                     <label for="nombre">Estado</label>
                     <input name="name" type="text" class="form-control" id="mood" aria-describedby="nombre" placeholder="nombre Completo" value={{user.mood}}>
                     <br>
-                    <input class="btn btn-primary" type="button" onclick="updateName()" value = "Actualzar">
+                    <input class="btn btn-primary" type="button" onclick="updateMood()" value = "Actualzar">
                 </div>
             </form>
-             <div id="updateErrorName"><span id="errorspan" class="error"></span></div>
+             <div id="updateErrorMood"><span id="errSpan" class="errSpan error"></span></div>
         </div>
+        <div id="formModifyAvatar" style="visibility: hidden; display:none;" class="w3-container w3-card w3-white w3-round w3-margin">
+               <form enctype="multipart/form-data" id="formUpload">
+                 <div class="form-group">
+                    <label for="exampleInputPassword1">Avatar</label>
+                    <input id="avatar" name="img" type="file"  class="form-control">
+                    <br>
+                    <input class="btn btn-primary" type="button" onclick="updateAvatar()" value = "Actualzar">
+                </div>
+            </form>
+             <div id="updateErrorAvatar"><span id="errSpan" class="errSpan error "></span></div>
+        </div>
+
       </div>
      
       

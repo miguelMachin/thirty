@@ -12,7 +12,7 @@
   <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
   <style>
   html,body,h1,h2,h3,h4,h5 {font-family: "Open Sans", sans-serif}
-  #updateErrorName , #updateErrorPasswd{
+  #updateErrorName , #updateErrorPasswd,#updateErrorAvatar, #updateErrorMood{
     text-align: center;
     padding-bottom: 5%; 
   }
@@ -85,6 +85,8 @@
       name.style.borderColor="#ced4da";
       if (name.value == ""){
           name.style.borderColor="red";
+         // document.getElementById("errSpan").innerHTML = "Los campos no pueden estar vacios";
+          document.getElementsByClassName("errSpan")[1].innerHTML = "Los campos no pueden estar vacios";
       }else{
         let data = {name:name.value};
         $.ajax({
@@ -112,7 +114,7 @@
         oldPasswd.style.borderColor="red";
         newPasswd.style.borderColor="red";
         repeatPasswd.style.borderColor="red";
-        document.getElementById("errSpan").innerHTML = "Los campos no pueden estar vacios";
+        document.getElementsByClassName("errSpan")[0].innerHTML = "Los campos no pueden estar vacios";
       }else{
           if (newPasswd.value != repeatPasswd.value){
             repeatPasswd.style.borderColor="red";
@@ -138,7 +140,7 @@
       }
       let forModifyPasswd = document.getElementById("forModifyPasswd");
       let forModifyName = document.getElementById("forModifyName");
-      let forModifyInterests = document.getElementById("forModifyInterests");
+      let forModifyMood = document.getElementById("forModifyMood");
       
       if(id == "liName"){
         console.log("liName");
@@ -146,8 +148,10 @@
         forModifyName.style.display = "block";
         forModifyPasswd.style.visibility = "hidden";
         forModifyPasswd.style.display = "none";
-        forModifyInterests.style.visibility = "hidden";
-        forModifyInterests.style.display = "none";
+        forModifyMood.style.visibility = "hidden";
+        forModifyMood.style.display = "none";
+        formModifyAvatar.style.visibility = "hidden";
+        formModifyAvatar.style.display = "none";
         let liName = document.getElementById("liName");
         liName.className = "liMenuSelect";
       }
@@ -156,23 +160,82 @@
         forModifyName.style.display = "none";
         forModifyPasswd.style.visibility = "visible";
         forModifyPasswd.style.display = "block";
-        forModifyInterests.style.visibility = "hidden";
-        forModifyInterests.style.display = "none";
+        forModifyMood.style.visibility = "hidden";
+        forModifyMood.style.display = "none";
+        formModifyAvatar.style.visibility = "hidden";
+        formModifyAvatar.style.display = "none";
         let liPasswd = document.getElementById("liPasswd");
         liPasswd.className = "liMenuSelect";
       }
-       if(id == "liInterest"){
+       if(id == "liMood"){
         forModifyName.style.visibility = "hidden";
         forModifyName.style.display = "none";
         forModifyPasswd.style.visibility = "hidden";
         forModifyPasswd.style.display = "none";
-        forModifyInterests.style.visibility = "visible";
-        forModifyInterests.style.display = "block";
-        let liInterest = document.getElementById("liInterest");
-        liInterest.className = "liMenuSelect";
+        forModifyMood.style.visibility = "visible";
+        forModifyMood.style.display = "block";
+        formModifyAvatar.style.visibility = "hidden";
+        formModifyAvatar.style.display = "none";
+        let liMood = document.getElementById("liMood");
+        liMood.className = "liMenuSelect";
+      }
+      if(id == "liAvatar"){
+        forModifyName.style.visibility = "hidden";
+        forModifyName.style.display = "none";
+        forModifyPasswd.style.visibility = "hidden";
+        forModifyPasswd.style.display = "none";
+        forModifyMood.style.visibility = "hidden";
+        forModifyMood.style.display = "none";
+        formModifyAvatar.style.visibility = "visible";
+        formModifyAvatar.style.display = "block";
+        let liAvatar = document.getElementById("liAvatar");
+        liAvatar.className = "liMenuSelect";
       }
 
-    } 
+    }
+
+    function updateMood(){
+      let mood = document.getElementById("mood");
+      mood.style.borderColor="#ced4da";
+      if (mood.value == ""){
+          mood.style.borderColor="red";
+          document.getElementsByClassName("errSpan")[2].innerHTML = "Los campos no pueden estar vacios";
+      }else{
+        let data = {mood:mood.value};
+        $.ajax({
+              type: "POST",
+              url: "updateMood",
+              data: data,
+              success: function(res){
+                  document.getElementById("updateErrorMood").innerHTML = res;
+                  document.getElementById("showMood").innerHTML = mood.value;
+              }
+        });
+      }
+    }
+    
+    function updateAvatar(){
+      let avatar = document.getElementById("avatar");
+      if (avatar.value == "" || !avatar.value.includes("jpg") || !avatar.value.includes("jpeg")){
+         document.getElementsByClassName("errSpan")[3].innerHTML = "El campo no puede estar vacio y debe ser jpg o jpeg";
+      }else{
+       let formData = new FormData($("#formUpload")[0]);
+      //formData = {avatar:avatar.value};
+      $.ajax({
+                type: "POST",
+                url: "updateAvatar",
+                data: formData,
+                contentType: false,
+                processData: false,
+
+                success: function(res){
+                    document.getElementById("updateErrorAvatar").innerHTML = res;
+                    //document.getElementById("showAvatar").innerHTML = avatar.value;
+                }
+          });
+        }
+    }
+
   </script>
 </head>
     {{{body}}}
