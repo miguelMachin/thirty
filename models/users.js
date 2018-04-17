@@ -10,6 +10,7 @@ let userSchema = new Schema({
     mood:{type:String},
     favorites: [],
     interests: [],
+    friend: [{type: Schema.Types.ObjectId, ref: 'users' }],
     ext : {type:String}
 },{versionKey: false });
 

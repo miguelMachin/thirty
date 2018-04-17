@@ -1,0 +1,20 @@
+{{#each users}}
+    <div class="w3-card w3-round w3-white w3-col m3 margin ">
+        <div class="w3-container" >
+            <div class="center"><a href="/searchPerson/{{this._id}}" class="w3-center">{{this.name}}</a></div>
+            <p class="w3-center">
+                {{#if this.ext}}
+                    <img src="/images/{{this.ext}}" class="w3-circle" style="height:106px;width:106px" alt="Avatar">
+                {{else}}
+                    <img src="/images/avatarDef.png" class="w3-circle" style="height:106px;width:106px" alt="Avatar">
+                {{/if}}        
+                    
+            </p>
+
+            <hr>
+            <p><i class="fa fa-pencil fa-fw w3-margin-right w3-text-theme"></i> {{this.mood}}</p>
+            <p><i class="fa fa-home fa-fw w3-margin-right w3-text-theme"></i> {{this.city}},{{this.country}}</p>
+            <p><i class="fa fa-birthday-cake fa-fw w3-margin-right w3-text-theme"></i> {{this.mood}}</p>
+        </div>
+    </div>            
+{{/each}}

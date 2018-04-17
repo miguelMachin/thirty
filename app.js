@@ -31,6 +31,9 @@ var storage = multer.diskStorage({
 //var upload = multer({ storage: storage })
 
 app.set('views', path.join(__dirname, 'views'));
+/*app.set('views', path.join(__dirname, 'views/views'));
+app.set('partial', path.join(__dirname, 'views/partial'));*/
+
 app.set('view engine', 'hbs');
 //app.use(fileUpload());
 // uncomment after placing your favicon in /public

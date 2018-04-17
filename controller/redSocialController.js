@@ -24,11 +24,6 @@ function login(req,res){
         if (user.length > 0 ){
             req.session.user = user[0];
             user = user[0];
-            if (user.ext == ""){
-                user.ext = "avatarDef.png"
-            }else{
-                user.ext = user._id +"."+user.ext;
-            }
             res.render('principal',{user:user});
         }else{
             res.render("index",{message:"USUARIO O CONTRASEÑA INCORRECTO",status:"error"});
@@ -57,6 +52,7 @@ function registrar(req,res){
                 city:req.body.city,
                 mood:"Sin Estado",
                 favorites: [],
+                friends: [],
                 interests: req.body.interests,
                 ext:""
             });
@@ -103,10 +99,10 @@ function updateName (req,res){
     User.update({email: req.session.user.email }, { $set: { name: req.body.name }}, function(err,user){
         if (err) {
             throw err;
-            res.render("respuestaVistaUpdate",{message:"Problemas al intentar actualizar",status:"error"});
+            res.render("respuestaVistaUpdate",{layout : false,message:"Problemas al intentar actualizar",status:"error"});
         }else{
             req.session.user.name = req.body.name;
-            res.render("respuestaVistaUpdate",{message:"Actualizado Correctamennte",status:"correcto"});
+            res.render("respuestaVistaUpdate",{layout : false,message:"Actualizado Correctamennte",status:"correcto"});
         }
     });
 }
@@ -116,10 +112,10 @@ function updateMood (req,res){
     User.update({email: req.session.user.email }, { $set: { mood: req.body.mood }}, function(err,user){
         if (err) {
             throw err;
-            res.render("respuestaVistaUpdate",{message:"Problemas al intentar actualizar",status:"error"});
+            res.render("respuestaVistaUpdate",{layout : false,message:"Problemas al intentar actualizar",status:"error"});
         }else{
             req.session.user.mood = req.body.mood;
-            res.render("respuestaVistaUpdate",{message:"Actualizado Correctamennte",status:"correcto"});
+            res.render("respuestaVistaUpdate",{layout : false,message:"Actualizado Correctamennte",status:"correcto"});
         }
     });
 }
@@ -131,7 +127,7 @@ function updatePasswd (req, res){
         User.find( {email:req.session.user.email} ,function(err,user){
             if (err) {
                 throw err;
-                res.render("respuestaVistaUpdate",{message:"Problemas al intentar actualizar",status:"error"});
+                res.render("respuestaVistaUpdate",{layout : false,message:"Problemas al intentar actualizar",status:"error"});
             }
 
             if (user.length >0 ){
@@ -141,15 +137,15 @@ function updatePasswd (req, res){
 
                         if (err) {
                             throw err;
-                            res.render("respuestaVistaUpdate",{message:"Problemas al intentar actualizar",status:"error"});
+                            res.render("respuestaVistaUpdate",{layout : false,message:"Problemas al intentar actualizar",status:"error"});
                         }else{
                             console.log(user);
                             req.session.user.passwd = req.body.newPasswd;
-                            res.render("respuestaVistaUpdate",{message:"Actualizado Correctamennte",status:"correcto"});
+                            res.render("respuestaVistaUpdate",{layout : false,message:"Actualizado Correctamennte",status:"correcto"});
                         }
                     });
                 }else{
-                    res.render("respuestaVistaUpdate",{message:"la contraseña introducida no es correcta",status:"error"});
+                    res.render("respuestaVistaUpdate",{layout : false,message:"la contraseña introducida no es correcta",status:"error"});
                 }      
             }
         });  
@@ -161,17 +157,46 @@ function updateAvatar(req,res){
     let user = req.session.user;
     user.ext = user._id+"."+ext[1];
     fs.rename(req.file.path,"public/images/"+user._id+"."+ext[1]);
-    User.update({email: user.email }, { $set: { ext: ext[1] }}, function(err,user){
+    User.update({email: user.email }, { $set: { ext: user._id+"."+ext[1] }}, function(err,user){
         if (err) {
             console.log(err);
         }
         else{
             //user.ext = user._id+"."+ext[1];;
-            res.render("respuestaVistaUpdate",{message:"Actualizado Correctamennte",status:"correcto"});
+            res.render("respuestaVistaUpdate",{layout : false,message:"Actualizado Correctamennte",status:"correcto"});
         }      
             
     });
     
+}
+
+function changeAvatar(req,res){
+    let img = req.session.user.ext;
+    console.log("img: "+img);
+    res.render("respuestaVistaAvatar",{layout:false,img:img});
+}
+
+function vistaBuscar(req,res){
+    res.render("vistaBuscar");
+}
+
+function searchAll(req,res){
+    User.find({_id:{$ne:req.session.user._id}},function(err,user){
+        if (err)
+            console.log(err);
+        res.render("respuestaBuscar",{layout:false,users:user});
+
+    });  
+}
+
+function searchPerson(req,res){
+    console.log(req.params.tagId);
+    User.findById(req.params.tagId,function(err,user){
+        if (err)
+            console.log(err);
+        res.render("vistaPersona",{user:user});
+
+    });  
 }
 
 module.exports = {
@@ -185,5 +210,9 @@ module.exports = {
    vistaPrincipal,
    updateName,
    updateAvatar,
-   updateMood
+   updateMood,
+   changeAvatar,
+   vistaBuscar,
+   searchAll,
+   searchPerson
 };
