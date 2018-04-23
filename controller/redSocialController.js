@@ -31,6 +31,11 @@ function login(req,res){
      });
 }
 
+function logout(req,res){
+    req.session.user = null;
+    res.redirect("/");
+}
+
 function vistaRegistro(req,res){
     res.render("registro",{message:"",interests:interests,country:country});
 
@@ -45,6 +50,7 @@ function registrar(req,res){
             res.render("registro",{message:"Ya existe otra cuenta con ese Correo",interests:interests,country:country,status:"error"});
         }else{
             let insertUser = new User ({
+                _id: mongoose.Types.ObjectId(),
                 name: req.body.name,
                 passwd: req.body.passwd,
                 email: req.body.email,
@@ -53,8 +59,10 @@ function registrar(req,res){
                 mood:"Sin Estado",
                 favorites: [],
                 friends: [],
+                friendPending: [],
                 interests: req.body.interests,
-                ext:""
+                avatar:"",
+                birthdate:req.body.birthdate
             });
             insertUser.save(function(error) {
                  if (error) {
@@ -69,8 +77,8 @@ function registrar(req,res){
 }
 
 function vistaPrincipal(req ,res){
-    if (req.session.user === undefined){
-        res.redirect("localhost:3000");
+    if (req.session.user === undefined || req.session.user === null ){
+        res.redirect("/");
     }else{
         res.render('principal',{user:req.session.user});
     }
@@ -87,15 +95,15 @@ function existInterest(value,array){
 }
 */
 function vistaUpdate (req, res){
-    if (req.session.user === undefined){
-        res.redirect("localhost:3000");
+    if (req.session.user === undefined || req.session.user === null ){
+        res.redirect("/");
     }else{
         res.render("vistaUpdate",{user:req.session.user,message:""});     
     }
 }
 
 function updateName (req,res){
-    console.log(req.body.name);
+   // console.log(req.body.name);
     User.update({email: req.session.user.email }, { $set: { name: req.body.name }}, function(err,user){
         if (err) {
             throw err;
@@ -108,7 +116,7 @@ function updateName (req,res){
 }
 
 function updateMood (req,res){
-    console.log(req.body.mood);
+    //console.log(req.body.mood);
     User.update({email: req.session.user.email }, { $set: { mood: req.body.mood }}, function(err,user){
         if (err) {
             throw err;
@@ -132,14 +140,12 @@ function updatePasswd (req, res){
 
             if (user.length >0 ){
                 if (user[0].passwd == req.body.oldPasswd){
-                    console.log(req.session.user.email);
                     User.update({email: req.session.user.email }, { $set: { passwd: req.body.newPasswd }}, function(err,user){
 
                         if (err) {
                             throw err;
                             res.render("respuestaVistaUpdate",{layout : false,message:"Problemas al intentar actualizar",status:"error"});
                         }else{
-                            console.log(user);
                             req.session.user.passwd = req.body.newPasswd;
                             res.render("respuestaVistaUpdate",{layout : false,message:"Actualizado Correctamennte",status:"correcto"});
                         }
@@ -155,9 +161,10 @@ function updatePasswd (req, res){
 function updateAvatar(req,res){
     let ext = req.file.originalname.split(".");
     let user = req.session.user;
-    user.ext = user._id+"."+ext[1];
-    fs.rename(req.file.path,"public/images/"+user._id+"."+ext[1]);
-    User.update({email: user.email }, { $set: { ext: user._id+"."+ext[1] }}, function(err,user){
+    let imageAsBase64 = fs.readFileSync(req.file.path, 'base64');
+    user.avatar = imageAsBase64;
+    fs.unlinkSync(req.file.path);
+    User.update({email: user.email }, { $set: { avatar: imageAsBase64 }}, function(err,user){
         if (err) {
             console.log(err);
         }
@@ -171,38 +178,160 @@ function updateAvatar(req,res){
 }
 
 function changeAvatar(req,res){
-    let img = req.session.user.ext;
-    console.log("img: "+img);
-    res.render("respuestaVistaAvatar",{layout:false,img:img});
+    let ext = req.file;
+    let imageAsBase64 = fs.readFileSync(req.file.path, 'base64');
+    fs.unlinkSync(req.file.path);
+    res.render("respuestaVistaAvatar",{layout:false,img:imageAsBase64});
 }
 
 function vistaBuscar(req,res){
-    res.render("vistaBuscar");
+    if (req.session.user === undefined || req.session.user === null ){
+        res.redirect("/");
+    }else{
+        res.render("vistaBuscar");
+    }
 }
 
 function searchAll(req,res){
-    User.find({_id:{$ne:req.session.user._id}},function(err,user){
+    User.find({_id:{$ne:req.session.user._id}},function(err,peoples){
         if (err)
-            console.log(err);
-        res.render("respuestaBuscar",{layout:false,users:user});
-
+            console.log(err);    
+        User.findById(req.session.user._id,function(err,user){
+            if (err)
+                console.log(err);
+            let friends = new Array();
+            let dummy ="";
+            for (let i = 0; i < peoples.length; i++) {
+                if (isFriend(peoples[i],user.friend)){
+                    dummy = {user:peoples[i],isFriend:true};
+                }else{
+                    dummy = {user:peoples[i],isFriend:false};
+                }
+                friends.push(dummy);
+            }
+           res.render("respuestaBuscar",{layout:false,users:friends});
+        });
     });  
+}
+
+function isFriend(user,array){
+    for (let i = 0; i < array.length; i++) {
+        if(user._id.equals(array[i])){
+            return true;
+        }
+    }
+    return false;
 }
 
 function searchPerson(req,res){
-    console.log(req.params.tagId);
-    User.findById(req.params.tagId,function(err,user){
+    console.log(req.body.name);
+   User.find({
+       $and: [
+           {_id:{$ne:req.session.user._id}},
+           {name:{$regex: '.*' + req.body.name + '.*'}}
+        ]},function(err,user){
+        if (err)
+            res.render("respuestaBuscar",{layout:false,users:user});
+    });
+}
+
+//$and:[{name:{$regex: '.*' + req.body.name + '.*'},{_id:{$ne:req.session.user._id}}]
+function perfilPerson(req,res){
+    //console.log(req.params.tagId);
+    User.findById(req.body.id,function(err,user){
         if (err)
             console.log(err);
-        res.render("vistaPersona",{user:user});
+            let friends = false;
+          console.log(user);
+            for (let i = 0; i < user.friend.length; i++) {
+                if (user.friend[i].equals(req.session.user._id)){
+                    friends = true;
+                }
+            }
+            console.log(friends);
+        res.render("vistaPersona",{layaout:false,user:user,friend:friends});
 
     });  
 }
+
+function addFriendPeding(req,res){
+    User.find({$and:[{_id:req.body.id},{friendPending:req.session.user._id}]},function(err,userB){
+        if(userB.length  == 0){
+            User.update({_id:req.body.id  }, { $push: { friendPending:req.session.user._id}}, function(err,user){
+                if(err)
+                    console.log(err);
+                console.log(user);
+            });
+        }
+
+    });
+   
+}
+
+/*function addFriend(req,res){
+    User.update({_id:req.body.id  }, { $push: { friendPending:req.session.user._id}}, function(err,user){
+        if(err)
+            console.log(err);
+        console.log(user);
+    });
+}*/
+
+function seeRequests(req,res){
+    console.log(req.session.user._id);
+    User.findById(req.session.user._id).populate('friendPending').exec(function(err,userF){
+        //console.log(userF);
+        if(err)
+            console.log(err);
+        else
+            res.render("respuestaPeticiones",{layaout:false,user:userF.friendPending});
+
+
+    });
+}
+
+function addFriend(req, res){
+    User.update({_id:req.session.user._id},{$push: {friend:req.body.id}},function(err,user){
+        if (err)
+            console.log(err)
+            res.send({ok:"ok"});
+    });
+    User.update({_id:req.session.user._id},{$pull: {friendPending:req.body.id}},function(err,user){
+        if (err)
+            console.log(err)     
+    });
+    User.update({_id:req.body.id},{$push: {friend:req.session.user._id}},function(err,user){
+        if (err)
+            console.log(err)
+    });
+}
+
+function removeFriendPeding(req, res){
+    User.update({_id:req.session.user._id},{$pull: {friendPending:req.body.id}},function(err,user){
+        if (err)
+            console.log(err)
+        
+        res.send({ok:"ok"});
+    });
+}
+
+function removeFriend(req, res){
+    User.update({_id:req.session.user._id},{$pull: {friend:req.body.id}},function(err,user){
+        if (err)
+            console.log(err)
+            res.send({ok:"ok"});
+    });
+    User.update({_id:req.body.id},{$pull: {friend:req.session.user._id}},function(err,user){
+        if (err)
+            console.log(err)
+    });
+}
+
 
 module.exports = {
    // getUser
    initApp,
    login,
+   logout,
    vistaRegistro,
    registrar,
    vistaUpdate,
@@ -214,5 +343,12 @@ module.exports = {
    changeAvatar,
    vistaBuscar,
    searchAll,
-   searchPerson
+   perfilPerson,
+   searchPerson,
+   addFriendPeding,
+   seeRequests,
+   addFriend,
+   removeFriendPeding,
+   removeFriend
+   
 };

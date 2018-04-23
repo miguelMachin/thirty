@@ -14,7 +14,7 @@
       <a href="#" class="w3-bar-item w3-button">Jane likes your post</a>
     </div>
   </div>
-  <a href="#" class="w3-bar-item w3-button w3-hide-small w3-right w3-padding-large w3-hover-white" title="My Account">
+  <a href="/logout" class="w3-bar-item w3-button w3-hide-small w3-right w3-padding-large w3-hover-white" title="Cerrar Sesión">
     <!--<img src="/w3images/avatar2.png" class="w3-circle" style="height:23px;width:23px" alt="Avatar">-->
      <i class="fa fa-sign-out" aria-hidden="true"></i>
   </a>
@@ -39,11 +39,11 @@
         <div class="w3-container">
          <h4 id="showName" class="w3-center">{{user.name}}</h4>
          <p class="w3-center">
-            {{#if user.ext}}
-                <img id="img" src="/images/{{user.ext}}" class="w3-circle" style="height:106px;width:106px" alt="Avatar">
+            {{#if user.avatar}}
+              <span id="img"> <img src="data:image/jpg;base64,{{user.avatar}}" class="w3-circle" style="height:106px;width:106px" alt="Avatar"/></span>
             {{else}}
-                <img id="img" src="/images/avatarDef.png" class="w3-circle" style="height:106px;width:106px" alt="Avatar">
-            {{/if}} 
+                <span id="img"><img src="/images/avatarDef.png" class="w3-circle" style="height:106px;width:106px" alt="Avatar"/></span>
+            {{/if}}  
           </p> 
          <hr>
          <p><i class="fa fa-pencil fa-fw w3-margin-right w3-text-theme"></i> {{user.mood}}</p>

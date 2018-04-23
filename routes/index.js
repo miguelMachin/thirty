@@ -19,5 +19,12 @@ router.post('/updatePasswd', redSocial.updatePasswd);
 router.post('/updateAvatar', redSocial.updateAvatar);
 router.post('/changeAvatar', redSocial.changeAvatar);
 router.post('/searchAll', redSocial.searchAll);
-router.get('/searchPerson/:tagId', redSocial.searchPerson)
+router.post('/searchPerson', redSocial.searchPerson);
+router.post('/addFriendPeding', redSocial.addFriendPeding);
+router.post('/removeFriendPeding', redSocial.removeFriendPeding);
+router.post('/removeFriend', redSocial.removeFriend);
+router.post('/perfilPerson', redSocial.perfilPerson);
+router.post('/addFriend', redSocial.addFriend);
+router.get('/logout', redSocial.logout);
+router.post('/seeRequests', redSocial.seeRequests);
 module.exports = router;

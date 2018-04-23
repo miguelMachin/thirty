@@ -167,7 +167,6 @@ function validation(){
       let liAvatar = document.getElementById("liAvatar");
       liAvatar.className = "liMenuSelect";
     }
-
   }
 
   function updateMood(){
@@ -211,15 +210,13 @@ function validation(){
               success: function(res){
                   document.getElementById("updateErrorAvatar").innerHTML = res;
                   if (!res.includes("error")){
-                      console.log("no error");
                      $.ajax({type: "POST",
                             url: "changeAvatar",
                             data: formData,
                             contentType: false,
                             processData: false,
                             success: function(res){
-                                console.log(res);
-                                document.getElementById("img").src = res;
+                                document.getElementById("img").innerHTML = res;
                             }
                      });
                   }
@@ -237,12 +234,25 @@ function searchAll(){
         document.getElementById("resul").innerHTML = res; 
       }
     });
-
 }
 
-function searchPerson(id){
-    $.ajax({type: "POST",
-    url: "searchPerson",
+function searchPerson(name){
+  console.log("esada");
+  console.log(name);
+    let data = {name:name};
+    $.ajax({
+      type: "post",
+      url: "searchPerson",
+      data: data,
+    success: function(res){
+      document.getElementById("resul").innerHTML = res; 
+    }
+  });
+}
+
+function perfilPerson(id){
+    $.ajax({type: "get",
+    url: "perfilPerson",
     data: id,
     contentType: false,
     processData: false,
@@ -251,3 +261,82 @@ function searchPerson(id){
     }
   });
 }
+
+function addFriendPeding(id){
+  let data = {id:id};
+  console.log(id);
+  $.ajax({
+    type: "POST",
+    url: "addFriendPeding",
+    data: data,
+    success: function(res){
+        console.log("add");
+    }
+  });
+}
+
+function removeFriendPeding(id){
+  let data = {id:id};
+  $.ajax({
+    type: "POST",
+    url: "removeFriendPeding",
+    data: data,
+    success: function(res){
+      console.log("entre");
+      seeRequests();
+    }
+  });
+}
+
+function removeFriend(id){
+  let data = {id:id};
+  console.log(id);
+  $.ajax({
+    type: "POST",
+    url: "removeFriend",
+    data: data,
+    success: function(res){
+      searchAll();
+    }
+  });
+}
+
+
+function seeRequests(){
+  $.ajax({
+    type: "POST",
+    url: "seeRequests",
+    success: function(res){
+        document.getElementById("seeRequests").innerHTML = res;
+    }
+  });
+}
+
+function addFriend(id){
+  let data = {id:id};
+  $.ajax({
+    type: "POST",
+    url: "addFriend",
+    data: data,
+    success: function(res){
+      seeRequests();
+    }
+  });
+}
+
+function perfilPerson(id){
+  let data = {id:id};
+  console.log("entre");
+  $.ajax({
+    type: "POST",
+    url: "perfilPerson",
+    data: data,
+    success: function(res){
+      document.getElementById("body").innerHTML = res;
+    }
+  });
+}
+
+
+
+

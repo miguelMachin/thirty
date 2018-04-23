@@ -1,0 +1,26 @@
+{{#if user}}
+    <p>Peticiones de amistad</p>
+
+{{/if}}
+
+{{#each user}}
+    <div class="w3-container">
+        <span>{{this.name}}</span>
+         <br>
+            {{#if this.avatar}}
+                <img src="data:image/jpg;base64,{{this.avatar}}" alt="Avatar" style="width:50%"/>
+            {{else}}
+                 <img src="/images/avatarDef.png" alt="Avatar" style="width:50%">
+            {{/if}} 
+          
+        
+        <div class="w3-row w3-opacity">
+            <div class="w3-half">
+                <button id="{{this._id}}" class="w3-button w3-block w3-green w3-section " title="Accept" onclick="addFriend(this.id)"><i class="fa fa-check"></i></button>
+            </div>
+            <div class="w3-half">
+                <button id="{{this._id}}" class="w3-button w3-block w3-red w3-section" title="Decline" onclick="removeFriendPeding(this.id)"><i class="fa fa-remove"></i></button>
+            </div>
+        </div>
+    </div>
+{{/each}}

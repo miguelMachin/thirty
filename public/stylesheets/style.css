@@ -48,3 +48,19 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Open Sans", sans-serif}
     margin: 2px auto;
     text-align: center;
   }
+
+  .fontiSize10px{
+    font-size:10px;
+  }
+  
+  .añadido{
+    background: red;
+  }
+  
+  .paddingTop5px{
+    padding-top:5px;
+  }
+
+  .marginTop10px{
+    margin-top:10px;
+  }

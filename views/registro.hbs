@@ -19,8 +19,12 @@
                 <input name="passwd2" type="password" class="form-control" id="passwdRepe" placeholder="Password">
             </div>
              <div class="form-group">
+                <label for="birthdate">Fecha de Nacimiento</label>
+                <input name="birthdate" id="birthdate" type="date" class="form-control">
+            </div>
+             <div class="form-group">
                 <label for="country">País</label><br>
-                <select>
+                <select name="country">
                      {{#each country}}
                         <option value={{@key}}>{{this}}</option>
                      {{/each}}
