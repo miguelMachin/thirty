@@ -2,9 +2,11 @@
 let User = require('./../models/users');*/
 const mongoose = require('./../config/conexion');
 const User = require('./../models/users');
+const Message = require('./../models/message');
 const base64 = require('base-64');
 //const multer = require('multer');
 const fs = require('fs');
+const moment = require('moment');
 const interests = ["Anime","Manga","Comunicaciones","Literaratura","Internet"];
 const country = {"SP":"España","UK":"Reino Unido","GER":"Alemania"};
 
@@ -62,7 +64,8 @@ function registrar(req,res){
                 friendPending: [],
                 interests: req.body.interests,
                 avatar:"",
-                birthdate:req.body.birthdate
+                birthdate:req.body.birthdate,
+                message:[]
             });
             insertUser.save(function(error) {
                  if (error) {
@@ -224,7 +227,7 @@ function isFriend(user,array){
 }
 
 function searchPerson(req,res){
-    console.log(req.body.name);
+   // console.log(req.body.name);
    User.find({
        $and: [
            {_id:{$ne:req.session.user._id}},
@@ -242,7 +245,7 @@ function perfilPerson(req,res){
         if (err)
             console.log(err);
             let friends = false;
-          console.log(user);
+         // console.log(user);
             for (let i = 0; i < user.friend.length; i++) {
                 if (user.friend[i].equals(req.session.user._id)){
                     friends = true;
@@ -260,7 +263,7 @@ function addFriendPeding(req,res){
             User.update({_id:req.body.id  }, { $push: { friendPending:req.session.user._id}}, function(err,user){
                 if(err)
                     console.log(err);
-                console.log(user);
+                //console.log(user);
             });
         }
 
@@ -277,7 +280,6 @@ function addFriendPeding(req,res){
 }*/
 
 function seeRequests(req,res){
-    console.log(req.session.user._id);
     User.findById(req.session.user._id).populate('friendPending').exec(function(err,userF){
         //console.log(userF);
         if(err)
@@ -326,6 +328,69 @@ function removeFriend(req, res){
     });
 }
 
+function addMessage(req,res){
+    let text = req.body.text.split(" ");
+    for (let i = 0; i < text.length; i++) {
+        if (text[i].includes("http://") || text[i].includes("https://")){
+            text[i] = "<a href=\""+text[i]+"\">"+text[i]+"</a>"; 
+        }
+    }
+    text = text.join(" ");
+    let img = "";
+    if (req.file != undefined){
+        let imageAsBase64 = fs.readFileSync(req.file.path, 'base64');
+        img = imageAsBase64;
+        fs.unlinkSync(req.file.path);
+    }
+
+    let id = mongoose.Types.ObjectId(); 
+    let newMessage = new Message({
+        _id: id,
+        idUser: req.session.user._id,
+        text: text,
+        image: img,
+        date : new Date()
+    });
+    newMessage.save(function(error) {
+        if(error) console.log(error);
+    });
+    User.update({_id:req.session.user._id},{$push:{messages:id}},function(err,act){
+        if (err) console.log(err);
+
+        console.log(act);
+        res.send({ok:"ok"});
+    });
+
+}
+
+function searchAllMessages(req,res){
+    User.findById(req.session.user._id).exec(function(err,user){
+        if (err) console.log(err);
+        let arrayMes = new Array();
+        Message.find({$or:[
+            {idUser:{$in:user.friend}},
+            {idUser:req.session.user._id}
+        ]}).populate("idUser").sort({date:-1}).exec(function(err,mes){
+            if (err) console.log(err);
+            for (let i = 0; i < mes.length; i++) {
+                let aux = {message:mes[i],dateCompare:formatDate(mes[i].date)};
+                arrayMes.push(aux);
+            }
+            res.render("respuestaMensajes",{layaout:false,message:arrayMes});
+        });
+    });  
+}
+
+function formatDate(date){
+    let dateFormat = "YYYY-MM-DD H:m:s";
+    let day = date.getDate().length == 1 ? "0"+date.getDate() : date.getDate();
+    let month = ""+(date.getMonth()+1).length == 1 ? "0"+date.getMonth()+1 : date.getMonth()+1;
+    let hours = date.getHours().length == 1 ? "0"+date.getHours() : date.getHours();
+    let min = date.getMinutes().length == 1 ? "0"+date.getMinutes() : date.getMinutes();
+    let sec = date.getSeconds().length == 1 ? "0"+date.getSeconds() : date.getSeconds();
+    let dateCompare = date.getFullYear()+"-"+month+"-"+day+" "+hours+":"+min+":"+sec;
+    return moment(dateCompare,dateFormat).locale('es').fromNow();
+}
 
 module.exports = {
    // getUser
@@ -349,6 +414,8 @@ module.exports = {
    seeRequests,
    addFriend,
    removeFriendPeding,
-   removeFriend
+   removeFriend,
+   addMessage,
+   searchAllMessages
    
 };

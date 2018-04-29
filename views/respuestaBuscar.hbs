@@ -3,7 +3,7 @@
         <div class="w3-container" >
             <div class="center"><a id={{this.user._id}} href="#" class="w3-center" onclick="perfilPerson(this.id)">{{this.user.name}}</a></div>
             <p class="w3-center">
-                {{#if this.avatar}}
+                {{#if this.user.avatar}}
                      <img src="data:image/jpg;base64,{{this.user.avatar}}" class="w3-circle" style="height:106px;width:106px" alt="Avatar"/>
                 {{else}}
                     <img src="/images/avatarDef.png" class="w3-circle" style="height:106px;width:106px" alt="Avatar">

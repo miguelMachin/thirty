@@ -1,3 +1,8 @@
+function init(){
+  seeRequests();
+  searchAllMessages();
+}
+
 function myFunction(id) {
     var x = document.getElementById(id);
     if (x.className.indexOf("w3-show") == -1) {
@@ -193,8 +198,6 @@ function validation(){
   
   function updateAvatar(){
     let avatar = document.getElementById("avatar");
-    console.log(avatar.value);
-    console.log(avatar.value.includes("jpeg"));
     if (avatar.value == "" ||  (avatar.value.includes("jpg") == false && avatar.value.includes("jpeg") == false)){
         document.getElementById("updateErrorAvatar").innerHTML = "<span id=\"errSpan\" class=\"errSpan error \">El campo no puede estar vacio y debe ser jpg o jpeg</span>";
     }else{
@@ -336,6 +339,61 @@ function perfilPerson(id){
     }
   });
 }
+
+function searchAllMessages(){
+  $.ajax({
+    type: "POST",
+    url: "searchAllMessages",
+    success: function(res){
+      document.getElementById("messages").innerHTML = res;
+
+    }
+  });
+}
+
+function addMessage(){
+    let text = document.getElementById("text");
+    let imgUpload = document.getElementById("imgUpload");
+    let validate = true;
+    console.log(text.value);
+    console.log(imgUpload.value);
+    if (text.value == "" && imgUpload.value == ""){
+      document.getElementById("erroText").innerHTML="Debe contener algo el mensaje";
+      text.style.borderColor="red";
+    }else{
+      if(text.value != "" && imgUpload.value != ""){
+        if ((imgUpload.value.includes("jpg") == false && imgUpload.value.includes("jpeg") == false)){
+          document.getElementById("erroText").innerHTML="La imagen debe ser jpeg o jpg";
+          text.style.borderColor="red";
+          validate = false;
+        } 
+      }
+      if (text.value == "" && imgUpload.value != ""){
+        if ((imgUpload.value.includes("jpg") == false && imgUpload.value.includes("jpeg") == false)){
+          document.getElementById("erroText").innerHTML="La imagen debe ser jpeg o jpg";
+          text.style.borderColor="red";
+          validate = false;
+        }
+      }
+      if(validate){
+        text.style.borderColor="#ced4da";
+        document.getElementById("erroText").innerHTML="";
+        let formData = new FormData($("#formMessage")[0]);
+        $.ajax({
+          type: "POST",
+          url: "addMessage",
+          data: formData,
+          contentType: false,
+          processData: false,
+          success: function(res){
+            if (res.ok == "ok"){
+              searchAllMessages()
+            }
+          }
+        });
+      }
+    }
+  }
 
 
 

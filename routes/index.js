@@ -27,4 +27,9 @@ router.post('/perfilPerson', redSocial.perfilPerson);
 router.post('/addFriend', redSocial.addFriend);
 router.get('/logout', redSocial.logout);
 router.post('/seeRequests', redSocial.seeRequests);
+router.post('/addMessage', redSocial.addMessage);
+router.post('/searchAllMessages', redSocial.searchAllMessages);
+
+
+
 module.exports = router;

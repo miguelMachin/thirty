@@ -84,7 +84,7 @@
                     <label for="repeatPasswd">Nueva Contraseña</label>
                     <input name="repeatPasswd" type="password" class="form-control" id="repeatPasswd" aria-describedby="passwd" >
                     <br>
-                    <input class="btn btn-primary" type="button" onclick="updatePasswd()" value = "Actualzar">
+                    <button class="btn btn-primary" onclick="updatePasswd()"><i class="fa fa-pencil"></i> Actualzar</button>
                 </div>
             </form>
             <div id="updateErrorPasswd"><span id="errSpan" class="errSpan error"></span></div>
@@ -95,7 +95,9 @@
                     <label for="nombre">Nombre Completo</label>
                     <input name="name" type="text" class="form-control" id="name" aria-describedby="nombre" placeholder="nombre Completo" value="{{user.name}}" >
                     <br>
-                    <input class="btn btn-primary" type="button" onclick="updateName()" value = "Actualzar">
+                    
+                    <button class="btn btn-primary" onclick="updateName()"><i class="fa fa-pencil"></i> Actualzar</button>
+                    
                 </div>
             </form>
              <div id="updateErrorName"><span id="errSpan" class="errSpan error"></span></div>
@@ -106,7 +108,7 @@
                     <label for="nombre">Estado</label>
                     <input name="name" type="text" class="form-control" id="mood" aria-describedby="nombre" placeholder="nombre Completo" value={{user.mood}}>
                     <br>
-                    <input class="btn btn-primary" type="button" onclick="updateMood()" value = "Actualzar">
+                    <button class="btn btn-primary" onclick="updateMood()"><i class="fa fa-pencil"></i> Actualzar</button>
                 </div>
             </form>
              <div id="updateErrorMood"><span id="errSpan" class="errSpan error"></span></div>
@@ -117,7 +119,7 @@
                     <label for="exampleInputPassword1">Avatar</label>
                     <input id="avatar" name="img" type="file"  class="form-control">
                     <br>
-                    <input class="btn btn-primary" type="button" onclick="updateAvatar()" value = "Actualzar">
+                    <button class="btn btn-primary" onclick="updateAvatar()"><i class="fa fa-pencil"></i> Actualzar</button>
                 </div>
             </form>
              <div id="updateErrorAvatar"><span id="errSpan" class="errSpan error "></span></div>

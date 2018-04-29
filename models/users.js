@@ -14,11 +14,13 @@ let userSchema = new Schema({
     friend: [{type: Schema.Types.ObjectId, ref: "users" }],
     friendPending: [{ type: Schema.ObjectId, ref: "users" }],
     avatar : {type:String},
-    birthdate : {type: Date}
+    birthdate : {type: Date},
+    messages:[{type: Schema.Types.ObjectId, ref: "messages"}]
     
 },{versionKey: false });
 
 let User = mongoose.model('users',userSchema);
+
 
 module.exports = User;
 

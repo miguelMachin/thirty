@@ -64,3 +64,29 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Open Sans", sans-serif}
   .marginTop10px{
     margin-top:10px;
   }
+
+  .noResize {
+    resize:none;
+  }
+  
+  .displayNone{
+    display:none;
+  }
+
+  .marginTop6px{
+    margin-top:6px;  
+  }
+
+  .padding13px{
+    padding:13px;
+  }
+  
+  .textAlignCenter{
+    text-align:center;
+  }
+  
+  .borderRadius15px{
+  border-radius: 15px 15px 15px 15px;
+  -moz-border-radius: 15px 15px 15px 15px;
+  -webkit-border-radius: 15px 15px 15px 15px;
+}
