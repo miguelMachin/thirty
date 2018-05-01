@@ -1,4 +1,6 @@
+const redSocial = require('./controller/redSocialController');
 var express = require('express');
+var socket_io = require( "socket.io" );
 var path = require('path');
 //var favicon = require('serve-favicon');
 var logger = require('morgan');
@@ -14,6 +16,8 @@ var index = require('./routes/index');
 //var users = require('./routes/users');
 
 var app = express();
+var io = socket_io();
+app.io = io;
 //app.use(csrf());
 // view engine setup
 
@@ -78,5 +82,11 @@ app.use(function(err, req, res, next) {
   res.status(err.status || 500);
   res.render('error');
 });
+
+
+io.on('connection', function(socket){
+  console.log('A client connection occurred!');
+});
+
 
 module.exports = app;

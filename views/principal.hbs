@@ -6,7 +6,6 @@
   <a href="/vistaPrincipal" class="w3-bar-item w3-button w3-padding-large w3-theme-d4"><i class="fa fa-home w3-margin-right"></i>Logo</a>
   <a href="/vistaBuscar" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white" title="Buscar"><i class="fa fa-globe"></i></a>
   <a href="/vistaUpdate" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white" title="Ajustes"><i class="fa fa-user"></i></a>
-  <a href="#" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white" title="Messages"><i class="fa fa-envelope"></i></a>
   <div class="w3-dropdown-hover w3-hide-small">
     <button class="w3-button w3-padding-large" title="Notifications"><i class="fa fa-bell"></i><span class="w3-badge w3-right w3-small w3-green">3</span></button>     
     <div class="w3-dropdown-content w3-card-4 w3-bar-block" style="width:300px">
@@ -110,6 +109,13 @@
           </div>
         </div>
       </div>
+      
+        <div class="w3-col m12 paddingMessageHidden">
+          <div class="messageHidden" id="messageHidden">
+            <div id="newMessages" class="textAlignCenter width100 colorBlue" onclick="searchAllMessages();"><span>Nuevos Mensajes</span></div>
+          </div>
+      </div>
+      
       <div id="messages"></div>
     <!-- End Middle Column -->
     </div>

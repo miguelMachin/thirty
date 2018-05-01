@@ -291,6 +291,19 @@ function removeFriendPeding(id){
   });
 }
 
+function removeFriendPerfil(id){
+  let data = {id:id};
+  console.log(id);
+  $.ajax({
+    type: "POST",
+    url: "removeFriend",
+    data: data,
+    success: function(res){
+      perfilPerson(id);
+    }
+  });
+}
+
 function removeFriend(id){
   let data = {id:id};
   console.log(id);
@@ -303,6 +316,7 @@ function removeFriend(id){
     }
   });
 }
+
 
 
 function seeRequests(){
@@ -341,6 +355,7 @@ function perfilPerson(id){
 }
 
 function searchAllMessages(){
+  document.getElementById("messageHidden").style.display="none";
   $.ajax({
     type: "POST",
     url: "searchAllMessages",
@@ -395,6 +410,28 @@ function addMessage(){
     }
   }
 
+function addFavorites(id){
+  let data = {id:id};
+  $.ajax({type: "POST",
+    url: "addFavorites",
+    data: data,
+    success: function(res){
+      if (res.ok == "ok"){
+        searchAllMessages()
+      }
+    }
+  });
+}
 
-
-
+function removeFavorites(id){
+  let data = {id:id};
+  $.ajax({type: "POST",
+    url: "removeFavorites",
+    data: data,
+    success: function(res){
+      if (res.ok == "ok"){
+        searchAllMessages()
+      }
+    }
+  });
+}

@@ -1,5 +1,6 @@
 /*let mongoose = require('./../config/conexion');
 let User = require('./../models/users');*/
+const socketApi = require('./socketApi');
 const mongoose = require('./../config/conexion');
 const User = require('./../models/users');
 const Message = require('./../models/message');
@@ -9,13 +10,10 @@ const fs = require('fs');
 const moment = require('moment');
 const interests = ["Anime","Manga","Comunicaciones","Literaratura","Internet"];
 const country = {"SP":"España","UK":"Reino Unido","GER":"Alemania"};
-
 //const upload = multer({dest: 'uploads/'}); 
-
 //const formidable = require('formidable');
 function initApp(req,res) {
     res.render("index",{message:""});
-
 }
 
 function login(req,res){
@@ -40,7 +38,6 @@ function logout(req,res){
 
 function vistaRegistro(req,res){
     res.render("registro",{message:"",interests:interests,country:country});
-
 }
 
 function registrar(req,res){
@@ -205,7 +202,7 @@ function searchAll(req,res){
             let friends = new Array();
             let dummy ="";
             for (let i = 0; i < peoples.length; i++) {
-                if (isFriend(peoples[i],user.friend)){
+                if (isSome(peoples[i],user.friend)){
                     dummy = {user:peoples[i],isFriend:true};
                 }else{
                     dummy = {user:peoples[i],isFriend:false};
@@ -217,7 +214,7 @@ function searchAll(req,res){
     });  
 }
 
-function isFriend(user,array){
+function isSome(user,array){
     for (let i = 0; i < array.length; i++) {
         if(user._id.equals(array[i])){
             return true;
@@ -263,6 +260,7 @@ function addFriendPeding(req,res){
             User.update({_id:req.body.id  }, { $push: { friendPending:req.session.user._id}}, function(err,user){
                 if(err)
                     console.log(err);
+                    socketApi.update("updateFriend");
                 //console.log(user);
             });
         }
@@ -358,24 +356,34 @@ function addMessage(req,res){
         if (err) console.log(err);
 
         console.log(act);
+        socketApi.update("updateMessage");
         res.send({ok:"ok"});
+        
     });
-
 }
 
 function searchAllMessages(req,res){
     User.findById(req.session.user._id).exec(function(err,user){
         if (err) console.log(err);
         let arrayMes = new Array();
+        
         Message.find({$or:[
             {idUser:{$in:user.friend}},
             {idUser:req.session.user._id}
         ]}).populate("idUser").sort({date:-1}).exec(function(err,mes){
             if (err) console.log(err);
+            let aux = "";
             for (let i = 0; i < mes.length; i++) {
-                let aux = {message:mes[i],dateCompare:formatDate(mes[i].date)};
+                if(isSome(mes[i],user.favorites)){
+                    console.log("entre");
+                    aux = {message:mes[i],dateCompare:formatDate(mes[i].date),isFavorite:true};
+                }else{
+                    console.log("no entre");
+                    aux = {message:mes[i],dateCompare:formatDate(mes[i].date)};
+                }
                 arrayMes.push(aux);
             }
+            console.log(arrayMes);
             res.render("respuestaMensajes",{layaout:false,message:arrayMes});
         });
     });  
@@ -391,6 +399,23 @@ function formatDate(date){
     let dateCompare = date.getFullYear()+"-"+month+"-"+day+" "+hours+":"+min+":"+sec;
     return moment(dateCompare,dateFormat).locale('es').fromNow();
 }
+
+function addFavorites(req,res){
+    console.log(req.body.id);
+    User.findByIdAndUpdate(req.session.user._id,{$push:{favorites:req.body.id}},function(err,user){
+        if (err) console.log(err);
+        res.send({ok:"ok"});
+    })
+    
+}
+
+function removeFavorites(req,res){
+    User.findByIdAndUpdate(req.session.user._id,{$pull:{favorites:req.body.id}},function(err,user){
+        if (err) console.log(err);
+        res.send({ok:"ok"});
+    }) 
+}
+
 
 module.exports = {
    // getUser
@@ -416,6 +441,8 @@ module.exports = {
    removeFriendPeding,
    removeFriend,
    addMessage,
-   searchAllMessages
+   searchAllMessages,
+   addFavorites,
+   removeFavorites
    
 };

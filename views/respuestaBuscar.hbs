@@ -15,9 +15,9 @@
             <p><i class="fa fa-home fa-fw w3-margin-right w3-text-theme"></i> {{this.user.city}},{{this.user.country}}</p>
             <p><i class="fa fa-birthday-cake fa-fw w3-margin-right w3-text-theme"></i> {{this.user.mood}}</p>
             {{#if this.isFriend}}
-                <p><button id="{{this.user._id}}"class="btn btn-primary fontiSize10px" onclick="removeFriend(this.id)";>Borrar Amigos</button></p>
+                <p><button id="{{this.user._id}}" class="btn btn-primary fontiSize10px" onclick="removeFriend(this.id)";>Borrar Amigos</button></p>
             {{else}}
-                <p><button id="{{this.user._id}}"class="btn btn-primary fontiSize10px" onclick="addFriendPeding(this.id)";>Añadir Amigos</button></p>
+                <p><button id="{{this.user._id}}" class="btn btn-primary fontiSize10px" onclick="addFriendPeding(this.id)";>Añadir Amigos</button></p>
             {{/if}}
         </div>
     </div>            

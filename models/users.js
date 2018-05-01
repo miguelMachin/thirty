@@ -9,7 +9,7 @@ let userSchema = new Schema({
     country:{type:String},
     city:{type:String},
     mood:{type:String},
-    favorites: [],
+    favorites:[{type: Schema.Types.ObjectId, ref: "messages"}],
     interests: [],
     friend: [{type: Schema.Types.ObjectId, ref: "users" }],
     friendPending: [{ type: Schema.ObjectId, ref: "users" }],

@@ -1,6 +1,6 @@
 const express = require('express');
+const app = require('../app');
 const router = express.Router();
-
 const redSocial = require('./../controller/redSocialController');
 /*const multer = require('multer');
 const upload = multer({dest: 'uploads/'});*/
@@ -29,7 +29,6 @@ router.get('/logout', redSocial.logout);
 router.post('/seeRequests', redSocial.seeRequests);
 router.post('/addMessage', redSocial.addMessage);
 router.post('/searchAllMessages', redSocial.searchAllMessages);
-
-
-
-module.exports = router;
+router.post('/addFavorites', redSocial.addFavorites);
+router.post('/removeFavorites', redSocial.removeFavorites);
+module.exports =  router; 

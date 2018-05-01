@@ -12,6 +12,27 @@
   <link rel="stylesheet" type="text/css"  href="stylesheets/style.css">
   <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
   <script src="javascripts/js.js"></script>
+  <script src="/socket.io/socket.io.js"></script>
+  <script>
+    const socket = io('http://localhost:3000');
+    socket.on('update',function(data){
+      if(data.fun === "updateFriend"){
+        seeRequests();
+      }
+      if(data.fun === "updateMessage"){
+        document.getElementById("messageHidden").style.display="";
+      }  
+    })
+    /*function refreshRequest(){
+    seeRequests();
+  }
+
+  function refreshMessage(){
+    searchAllMessages();
+  }
+  
+  setInterval(refreshRequest,20000);*/
+  </script>
 </head>
 
     {{{body}}}

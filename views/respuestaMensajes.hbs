@@ -17,6 +17,10 @@
                 </div>
               {{/if}}
           </div>
-          <button type="button" class="w3-button w3-theme-d1 w3-margin-bottom"><i class="fa fa-thumbs-up"></i>  Like</button>  
+           {{#if this.isFavorite}}
+              <button id="{{this.message._id}}" type="button" class="w3-button w3-theme-d1 w3-margin-bottom" onclick="removeFavorites(this.id);"><i class="fa fa-thumbs-down"></i> No me gusta</button>  
+           {{else}}
+              <button id="{{this.message._id}}" type="button" class="w3-button w3-theme-d1 w3-margin-bottom" onclick="addFavorites(this.id);"><i class="fa fa-thumbs-up"></i> Me gusta</button>  
+          {{/if}}
   </div>
 {{/each}}
