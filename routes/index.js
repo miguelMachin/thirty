@@ -31,4 +31,5 @@ router.post('/addMessage', redSocial.addMessage);
 router.post('/searchAllMessages', redSocial.searchAllMessages);
 router.post('/addFavorites', redSocial.addFavorites);
 router.post('/removeFavorites', redSocial.removeFavorites);
+router.post('/searchAllMessagesPerfil', redSocial.searchAllMessagesPerfil);
 module.exports =  router; 

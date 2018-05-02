@@ -3,7 +3,7 @@
 <div class="w3-top">
  <div class="w3-bar w3-theme-d2 w3-left-align w3-large">
   <a class="w3-bar-item w3-button w3-hide-medium w3-hide-large w3-right w3-padding-large w3-hover-white w3-large w3-theme-d2" href="javascript:void(0);" onclick="openNav()"><i class="fa fa-bars"></i></a>
-  <a href="/vistaPrincipal" class="w3-bar-item w3-button w3-padding-large w3-theme-d4"><i class="fa fa-home w3-margin-right"></i>Logo</a>
+  <a href="/vistaPrincipal" class="w3-bar-item w3-button w3-padding-large w3-theme-d4"><i class="fa fa-home w3-margin-right"></i></a>
   <a href="/vistaBuscar" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white" title="Buscar"><i class="fa fa-globe"></i></a>
   <a href="/vistaUpdate" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white" title="Ajustes"><i class="fa fa-user"></i></a>
   <div class="w3-dropdown-hover w3-hide-small">
@@ -20,14 +20,6 @@
   </a>
  </div>
 </div>
-
-<!-- Navbar on small screens -->
-<div id="navDemo" class="w3-bar-block w3-theme-d2 w3-hide w3-hide-large w3-hide-medium w3-large">
-  <a href="#" class="w3-bar-item w3-button w3-padding-large">Link 1</a>
-  <a href="#" class="w3-bar-item w3-button w3-padding-large">Link 2</a>
-  <a href="#" class="w3-bar-item w3-button w3-padding-large">Link 3</a>
-  <a href="#" class="w3-bar-item w3-button w3-padding-large">My Profile</a>
-</div>
 <!-- Page Container -->
 <div class="w3-container w3-content" style="max-width:1400px;margin-top:80px">    
   <!-- The Grid -->
@@ -37,25 +29,16 @@
       <!-- Profile -->
       <div class="w3-card w3-round w3-white">
         <div class="w3-container">
-            <form>
-                 <div class="form-group">
-                    <label for="nombre">Nombre Completo</label>
-                    <input type="text" id="searchName" name="searchName" class="form-control" aria-describedby="nombre" placeholder="nombre Completo" onkeyup="searchPerson(this.value)">
-                </div>
-            </form>
+          <div class="form-group">
+            <label for="nombre" class="searchPeople">Nombre Completo</label>
+            <input type="text" id="searchName" name="searchName" class="form-control" aria-describedby="nombre" placeholder="nombre Completo" onkeyup="searchPerson(this.value)">
+          </div> 
         </div>
       </div>
       <br>
       <!-- Interests --> 
       <div class="w3-card w3-round w3-white w3-hide-small">
-        <div class="menuLateral">
-            <ul>
-                <li id="liName" class="liMenuSelect" onclick="changeForm(this.id)">Nombre</li>
-                <li id="liPasswd" class="liMenu" onclick="changeForm(this.id)">Contraseña</li>
-                <li id="liMood" class="liMenu" onclick="changeForm(this.id)">Estado</li>
-                <li id="liAvatar" class="liMenu" onclick="changeForm(this.id)">Avatar</li>
-            </ul>
-        </div>
+        
       </div>
       <br>
     <!-- End Left Column -->

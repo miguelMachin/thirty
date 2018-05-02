@@ -7,7 +7,8 @@
             {{/if}}
 
           <span class="w3-right w3-opacity">{{this.dateCompare}}</span>
-          <h4>{{this.message.idUser.name}}</h4><br>
+          <div class="center"><span id={{this.message.idUser._id}} class="w3-center name" onclick="perfilPerson(this.id)">{{this.message.idUser.name}}</span>
+          </div><br>
           <hr class="w3-clear">
           <p>{{{this.message.text}}}</p>
             <div class="w3-row-padding" style="margin:0 -16px">

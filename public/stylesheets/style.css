@@ -31,6 +31,18 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Open Sans", sans-serif}
      font-weight: bold;
     
   }
+
+  .searchPeople{
+    margin-top: 10px;
+    margin-bottom: 15px;
+    margin-left: 4px;
+  }
+  
+  .name{
+    cursor: pointer;
+    font-size: 20px;
+  }
+  
   
   .margin {
     margin: 10px 10px;
@@ -46,7 +58,6 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Open Sans", sans-serif}
   
   .center{
     margin: 2px auto;
-    text-align: center;
   }
 
   .fontiSize10px{
@@ -63,6 +74,10 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Open Sans", sans-serif}
 
   .marginTop10px{
     margin-top:10px;
+  }
+  
+  .marginTop16px{
+    margin-top:16px;
   }
 
   .noResize {
@@ -117,4 +132,8 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Open Sans", sans-serif}
 
 .colorBlue{
   color:blue;
+}
+
+.paddingtop20{
+  padding-top:20px;
 }

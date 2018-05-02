@@ -19,16 +19,24 @@ function initApp(req,res) {
 function login(req,res){
     let email = req.body.email;
     let passwd = req.body.passwd;
+    let arrayAux = new Array();
     User.find({$and: [{email:email},{passwd:passwd}]} ,function(err,user){
         if (err) console.log(err);
         if (user.length > 0 ){
             req.session.user = user[0];
-            user = user[0];
-            res.render('principal',{user:user});
+            req.session.date = formaDateBirthdate(user[0].birthdate);
+            res.render('principal',{user:req.session.user,date:req.session.date});
         }else{
             res.render("index",{message:"USUARIO O CONTRASEÑA INCORRECTO",status:"error"});
         }
      });
+}
+
+function formaDateBirthdate(date){
+    let day = date.getDate().length == 1 ? "0"+date.getDate() : date.getDate();
+    let month = ""+(date.getMonth()+1).length == 1 ? "0"+date.getMonth()+1 : date.getMonth()+1;
+    let dateCompare =+day+"-"+month+"-"+date.getFullYear();
+    return dateCompare;
 }
 
 function logout(req,res){
@@ -80,7 +88,7 @@ function vistaPrincipal(req ,res){
     if (req.session.user === undefined || req.session.user === null ){
         res.redirect("/");
     }else{
-        res.render('principal',{user:req.session.user});
+        res.render('principal',{user:req.session.user,date:req.session.date});
     }
 
 }
@@ -98,7 +106,7 @@ function vistaUpdate (req, res){
     if (req.session.user === undefined || req.session.user === null ){
         res.redirect("/");
     }else{
-        res.render("vistaUpdate",{user:req.session.user,message:""});     
+        res.render("vistaUpdate",{user:req.session.user,date:req.session.date,message:""});     
     }
 }
 
@@ -117,12 +125,18 @@ function updateName (req,res){
 
 function updateMood (req,res){
     //console.log(req.body.mood);
-    User.update({email: req.session.user.email }, { $set: { mood: req.body.mood }}, function(err,user){
+    let mood = req.body.mood.split(" ");
+    for (let i = 0; i < mood.length; i++) {
+        if(mood[i].includes("http") || mood[i].includes("https")){
+            mood[i] = "<a href="+mood[i]+">"+mood[i]+"</a>";
+        }    
+    }
+    User.update({email: req.session.user.email }, { $set: { mood: mood }}, function(err,user){
         if (err) {
             throw err;
             res.render("respuestaVistaUpdate",{layout : false,message:"Problemas al intentar actualizar",status:"error"});
         }else{
-            req.session.user.mood = req.body.mood;
+            req.session.user.mood = mood;
             res.render("respuestaVistaUpdate",{layout : false,message:"Actualizado Correctamennte",status:"correcto"});
         }
     });
@@ -235,9 +249,14 @@ function searchPerson(req,res){
     });
 }
 
-//$and:[{name:{$regex: '.*' + req.body.name + '.*'},{_id:{$ne:req.session.user._id}}]
 function perfilPerson(req,res){
-    //console.log(req.params.tagId);
+    console.log(req.body.id);
+    console.log(req.session.user._id);
+    if(req.body.id == req.session.user._id){
+        socketApi.update("notUpdate");
+        res.render("principal",{layout:false,user:req.session.user,date:req.session.date});
+    }
+
     User.findById(req.body.id,function(err,user){
         if (err)
             console.log(err);
@@ -248,8 +267,9 @@ function perfilPerson(req,res){
                     friends = true;
                 }
             }
-            console.log(friends);
-        res.render("vistaPersona",{layaout:false,user:user,friend:friends});
+            let date = formaDateBirthdate(user.birthdate);
+
+        res.render("vistaPersona",{layout:false,user:user,friend:friends,date:date});
 
     });  
 }
@@ -269,21 +289,13 @@ function addFriendPeding(req,res){
    
 }
 
-/*function addFriend(req,res){
-    User.update({_id:req.body.id  }, { $push: { friendPending:req.session.user._id}}, function(err,user){
-        if(err)
-            console.log(err);
-        console.log(user);
-    });
-}*/
-
 function seeRequests(req,res){
     User.findById(req.session.user._id).populate('friendPending').exec(function(err,userF){
         //console.log(userF);
         if(err)
             console.log(err);
         else
-            res.render("respuestaPeticiones",{layaout:false,user:userF.friendPending});
+            res.render("respuestaPeticiones",{layout:false,user:userF.friendPending});
 
 
     });
@@ -355,7 +367,6 @@ function addMessage(req,res){
     User.update({_id:req.session.user._id},{$push:{messages:id}},function(err,act){
         if (err) console.log(err);
 
-        console.log(act);
         socketApi.update("updateMessage");
         res.send({ok:"ok"});
         
@@ -375,21 +386,42 @@ function searchAllMessages(req,res){
             let aux = "";
             for (let i = 0; i < mes.length; i++) {
                 if(isSome(mes[i],user.favorites)){
-                    console.log("entre");
-                    aux = {message:mes[i],dateCompare:formatDate(mes[i].date),isFavorite:true};
+                    aux = {message:mes[i],dateCompare:formatDateMessage(mes[i].date),isFavorite:true};
                 }else{
-                    console.log("no entre");
-                    aux = {message:mes[i],dateCompare:formatDate(mes[i].date)};
+                    aux = {message:mes[i],dateCompare:formatDateMessage(mes[i].date)};
                 }
                 arrayMes.push(aux);
             }
-            console.log(arrayMes);
-            res.render("respuestaMensajes",{layaout:false,message:arrayMes});
+            res.render("respuestaMensajes",{layout:false,message:arrayMes});
         });
     });  
 }
 
-function formatDate(date){
+function searchAllMessagesPerfil(req,res){
+    User.findById(req.body.id).exec(function(err,user){
+        if (err) console.log(err);
+        let arrayMes = new Array();
+        
+        Message.find({$or:[
+            {idUser:{$in:user.friend}},
+            {idUser:req.body.id}
+        ]}).populate("idUser").sort({date:-1}).exec(function(err,mes){
+            if (err) console.log(err);
+            let aux = "";
+            for (let i = 0; i < mes.length; i++) {
+                if(isSome(mes[i],user.favorites)){
+                    aux = {message:mes[i],dateCompare:formatDateMessage(mes[i].date),isFavorite:true};
+                }else{
+                    aux = {message:mes[i],dateCompare:formatDateMessage(mes[i].date)};
+                }
+                arrayMes.push(aux);
+            }
+            res.render("respuestaMensajes",{layout:false,message:arrayMes});
+        });
+    });  
+}
+
+function formatDateMessage(date){
     let dateFormat = "YYYY-MM-DD H:m:s";
     let day = date.getDate().length == 1 ? "0"+date.getDate() : date.getDate();
     let month = ""+(date.getMonth()+1).length == 1 ? "0"+date.getMonth()+1 : date.getMonth()+1;
@@ -399,6 +431,7 @@ function formatDate(date){
     let dateCompare = date.getFullYear()+"-"+month+"-"+day+" "+hours+":"+min+":"+sec;
     return moment(dateCompare,dateFormat).locale('es').fromNow();
 }
+
 
 function addFavorites(req,res){
     console.log(req.body.id);
@@ -443,6 +476,7 @@ module.exports = {
    addMessage,
    searchAllMessages,
    addFavorites,
-   removeFavorites
+   removeFavorites,
+   searchAllMessagesPerfil
    
 };

@@ -189,7 +189,13 @@ function validation(){
             success: function(res){
                 document.getElementById("updateErrorMood").innerHTML = res;
                 if (!res.includes("error")){
-                  document.getElementById("showMood").innerHTML = mood.value;
+                  let moodT = mood.value.split(" ");
+                  for (let i = 0; i < moodT.length; i++) {
+                      if(moodT[i].includes("http") || moodT[i].includes("https")){
+                          moodT[i] = "<a href="+moodT[i]+">"+moodT[i]+"</a>";
+                      }    
+                  }
+                  document.getElementById("showMood").innerHTML = moodT;
                 }
             }
       });
@@ -343,13 +349,13 @@ function addFriend(id){
 
 function perfilPerson(id){
   let data = {id:id};
-  console.log("entre");
   $.ajax({
     type: "POST",
     url: "perfilPerson",
     data: data,
     success: function(res){
       document.getElementById("body").innerHTML = res;
+      searchAllMessagesPerfil(id);
     }
   });
 }
@@ -360,6 +366,20 @@ function searchAllMessages(){
     type: "POST",
     url: "searchAllMessages",
     success: function(res){
+      document.getElementById("messages").innerHTML = res;
+
+    }
+  });
+}
+
+function searchAllMessagesPerfil(id){
+  let data = {id:id};
+ $.ajax({
+    type: "POST",
+    url: "searchAllMessagesPerfil",
+    data:data,
+    success: function(res){
+      document.getElementById("messageHidden").style.display="none";
       document.getElementById("messages").innerHTML = res;
 
     }
