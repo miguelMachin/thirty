@@ -402,11 +402,15 @@ function searchAllMessages(req,res){
             if (err) console.log(err);
             let aux = "";
             for (let i = 0; i < mes.length; i++) {
+                let isFavorite = false;
+                let myMessage = false;
                 if(isSome(mes[i],user.favorites)){
-                    aux = {message:mes[i],dateCompare:formatDateMessage(mes[i].date),isFavorite:true,myMessage:true};
-                }else{
-                    aux = {message:mes[i],dateCompare:formatDateMessage(mes[i].date,),myMessage:true};
+                   isFavorite = true; 
                 }
+                if(mes[i].idUser._id.equals(req.session.user._id)){
+                    myMessage = true; 
+                }
+                aux = {message:mes[i],dateCompare:formatDateMessage(mes[i].date),isFavorite:isFavorite,myMessage:myMessage};
                 arrayMes.push(aux);
             }
             res.render("respuestaMensajes",{layout:false,message:arrayMes});
@@ -426,11 +430,15 @@ function searchAllMessagesPerfil(req,res){
             if (err) console.log(err);
             let aux = "";
             for (let i = 0; i < mes.length; i++) {
+                let isFavorite = false;
+                let myMessage = false;
                 if(isSome(mes[i],user.favorites)){
-                    aux = {message:mes[i],dateCompare:formatDateMessage(mes[i].date),isFavorite:true,myMessage:false};
-                }else{
-                    aux = {message:mes[i],dateCompare:formatDateMessage(mes[i].date),myMessage:false};
+                   isFavorite = true; 
                 }
+                if(mes[i].idUser._id.equals(req.session.user._id)){
+                    myMessage = true; 
+                }
+                aux = {message:mes[i],dateCompare:formatDateMessage(mes[i].date),isFavorite:isFavorite,myMessage:myMessage};
                 arrayMes.push(aux);
             }
             res.render("respuestaMensajes",{layout:false,message:arrayMes});

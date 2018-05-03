@@ -12,8 +12,8 @@
   {{/if}}
    {{#if this.myMessage}}
     <span id="{{this.message._id}}" class="w3-right xDeleteMessage hidden" onclick="deleteMessage('{{{this.message._id}}}')"><i class="fa fa-times" aria-hidden="true"></i></span>
+    <br>
   {{/if}} 
-  <br>
   <span class="w3-right w3-opacity">{{this.dateCompare}}</span>
   <div class="center"><span id={{this.message.idUser._id}} class="w3-center name" onclick="perfilPerson(this.id)">{{this.message.idUser.name}}</span></div><br>
   <hr class="w3-clear">
