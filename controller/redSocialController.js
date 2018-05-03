@@ -177,6 +177,7 @@ function updatePasswd (req, res){
 function updateAvatar(req,res){
     let ext = req.file.originalname.split(".");
     let user = req.session.user;
+    console.log("entre");
     let imageAsBase64 = fs.readFileSync(req.file.path, 'base64');
     user.avatar = imageAsBase64;
     fs.unlinkSync(req.file.path);
@@ -186,6 +187,7 @@ function updateAvatar(req,res){
         }
         else{
             //user.ext = user._id+"."+ext[1];;
+            console.log("entre");
             res.render("respuestaVistaUpdate",{layout : false,message:"Actualizado Correctamennte",status:"correcto"});
         }      
             

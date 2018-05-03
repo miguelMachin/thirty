@@ -207,33 +207,33 @@ function validation(){
   
   function updateAvatar(){
     let avatar = document.getElementById("avatar");
+    console.log(avatar);
     if (avatar.value == "" ||  (avatar.value.includes("jpg") == false && avatar.value.includes("jpeg") == false)){
         document.getElementById("updateErrorAvatar").innerHTML = "<span id=\"errSpan\" class=\"errSpan error \">El campo no puede estar vacio y debe ser jpg o jpeg</span>";
     }else{
-     let formData = new FormData($("#formUpload")[0]);
-    //formData = {avatar:avatar.value};
-    $.ajax({
-              type: "POST",
-              url: "updateAvatar",
-              data: formData,
-              contentType: false,
-              processData: false,
-
-              success: function(res){
-                  document.getElementById("updateErrorAvatar").innerHTML = res;
-                  if (!res.includes("error")){
-                     $.ajax({type: "POST",
-                            url: "changeAvatar",
-                            data: formData,
-                            contentType: false,
-                            processData: false,
-                            success: function(res){
-                                document.getElementById("img").innerHTML = res;
-                            }
-                     });
-                  }
-              }
-        });
+      let formData = new FormData($("#formUpload")[0]);
+      //formData = {avatar:avatar.value};
+      $.ajax({
+                type: "POST",
+                url: "updateAvatar",
+                data: formData,
+                contentType: false,
+                processData: false,
+                success: function(res){
+                    document.getElementById("updateErrorAvatar").innerHTML = res;
+                    if (!res.includes("error")){
+                      $.ajax({type: "POST",
+                              url: "changeAvatar",
+                              data: formData,
+                              contentType: false,
+                              processData: false,
+                              success: function(res){
+                                  document.getElementById("img").innerHTML = res;
+                              }
+                      });
+                    }
+                }
+          });
       }
   }
 

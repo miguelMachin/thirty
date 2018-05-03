@@ -2,17 +2,16 @@
   {{#if this.myMessage}}
     <div class="w3-container w3-card w3-white w3-round w3-margin" onmouseover="show('{{{this.message._id}}}');" onmouseout="hide('{{{this.message._id}}}');">
   {{else}}
-   <div class="w3-container w3-card w3-white w3-round w3-margin"><br>
+   <div class="w3-container w3-card w3-white w3-round w3-margin">
   {{/if}}
   <br>         
   {{#if this.message.idUser.avatar}}
-    <img src="data:image/jpg;base64,{{this.message.idUser.avatar}}" alt="Avatar" class="w3-left w3-circle w3-margin-right" style="width:60px">
+    <img src="data:image/jpg;base64,{{this.message.idUser.avatar}}" alt="Avatar" class="w3-left w3-circle w3-margin-right" style="width:60px;height:60px;">
   {{else}}
-    <img src="/images/avatarDef.png" alt="Avatar" class="w3-left w3-circle w3-margin-right" style="width:60px">
+    <img src="/images/avatarDef.png" alt="Avatar" class="w3-left w3-circle w3-margin-right" style="width:60px; height:60px;">
   {{/if}}
    {{#if this.myMessage}}
     <span id="{{this.message._id}}" class="w3-right xDeleteMessage hidden" onclick="deleteMessage('{{{this.message._id}}}')"><i class="fa fa-times" aria-hidden="true"></i></span>
-    <br>
   {{/if}} 
   <span class="w3-right w3-opacity">{{this.dateCompare}}</span>
   <div class="center"><span id={{this.message.idUser._id}} class="w3-center name" onclick="perfilPerson(this.id)">{{this.message.idUser.name}}</span></div><br>
