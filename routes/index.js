@@ -32,4 +32,9 @@ router.post('/searchAllMessages', redSocial.searchAllMessages);
 router.post('/addFavorites', redSocial.addFavorites);
 router.post('/removeFavorites', redSocial.removeFavorites);
 router.post('/searchAllMessagesPerfil', redSocial.searchAllMessagesPerfil);
+router.post('/seeNotifications', redSocial.seeNotifications);
+router.post('/readNotification', redSocial.readNotification);
+router.post('/deleteNotification', redSocial.deleteNotification);
+router.post('/deleteMessage', redSocial.deleteMessage);
+
 module.exports =  router; 

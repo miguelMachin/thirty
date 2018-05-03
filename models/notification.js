@@ -5,9 +5,11 @@ let notificationSchema = new Schema({
     _id: Schema.Types.ObjectId,
     idUserOrigen: {type: Schema.Types.ObjectId, ref: "users"},
     idUserDest: {type: Schema.Types.ObjectId, ref: "users"},
-    read: {type:boolean}
+    idMessage: {type: Schema.Types.ObjectId, ref: "messages"},
+    date : {type: Date, default: Date.now},
+    read: {type:Boolean}
 },{versionKey: false });
 
-let notification = mongoose.model('notificatios',notificationSchema);
+let Notification = mongoose.model('notifications',notificationSchema);
 
-module.exports = notification;
+module.exports = Notification;

@@ -1,27 +1,35 @@
 {{#each message}}
-  <div class="w3-container w3-card w3-white w3-round w3-margin"><br>
-            {{#if this.message.idUser.avatar}}
-                <img src="data:image/jpg;base64,{{this.message.idUser.avatar}}" alt="Avatar" class="w3-left w3-circle w3-margin-right" style="width:60px">
-            {{else}}
-                <img src="/images/avatarDef.png" alt="Avatar" class="w3-left w3-circle w3-margin-right" style="width:60px">
-            {{/if}}
-
-          <span class="w3-right w3-opacity">{{this.dateCompare}}</span>
-          <div class="center"><span id={{this.message.idUser._id}} class="w3-center name" onclick="perfilPerson(this.id)">{{this.message.idUser.name}}</span>
-          </div><br>
-          <hr class="w3-clear">
-          <p>{{{this.message.text}}}</p>
-            <div class="w3-row-padding" style="margin:0 -16px">
-              {{#if this.message.image}}
-                <div class="w3-half">
-                  <img src="data:image/jpg;base64,{{this.message.image}}" style="width:100%" class="w3-margin-bottom borderRadius15px">
-                </div>
-              {{/if}}
-          </div>
-           {{#if this.isFavorite}}
-              <button id="{{this.message._id}}" type="button" class="w3-button w3-theme-d1 w3-margin-bottom" onclick="removeFavorites(this.id);"><i class="fa fa-thumbs-down"></i> No me gusta</button>  
-           {{else}}
-              <button id="{{this.message._id}}" type="button" class="w3-button w3-theme-d1 w3-margin-bottom" onclick="addFavorites(this.id);"><i class="fa fa-thumbs-up"></i> Me gusta</button>  
-          {{/if}}
+  {{#if this.myMessage}}
+    <div class="w3-container w3-card w3-white w3-round w3-margin" onmouseover="show('{{{this.message._id}}}');" onmouseout="hide('{{{this.message._id}}}');">
+  {{else}}
+   <div class="w3-container w3-card w3-white w3-round w3-margin"><br>
+  {{/if}}
+  <br>         
+  {{#if this.message.idUser.avatar}}
+    <img src="data:image/jpg;base64,{{this.message.idUser.avatar}}" alt="Avatar" class="w3-left w3-circle w3-margin-right" style="width:60px">
+  {{else}}
+    <img src="/images/avatarDef.png" alt="Avatar" class="w3-left w3-circle w3-margin-right" style="width:60px">
+  {{/if}}
+   {{#if this.myMessage}}
+    <span id="{{this.message._id}}" class="w3-right xDeleteMessage hidden" onclick="deleteMessage('{{{this.message._id}}}')"><i class="fa fa-times" aria-hidden="true"></i></span>
+  {{/if}} 
+  <br>
+  <span class="w3-right w3-opacity">{{this.dateCompare}}</span>
+  <div class="center"><span id={{this.message.idUser._id}} class="w3-center name" onclick="perfilPerson(this.id)">{{this.message.idUser.name}}</span></div><br>
+  <hr class="w3-clear">
+  <p>{{{this.message.text}}}</p>
+  <div class="w3-row-padding" style="margin:0 -16px">
+    {{#if this.message.image}}
+      <div class="w3-half">
+        <img src="data:image/jpg;base64,{{this.message.image}}" style="width:100%" class="w3-margin-bottom borderRadius15px">
+      </div>
+    {{/if}}
+   </div>
+    <hr class="w3-clear">
+    {{#if this.isFavorite}}
+      <button id="{{this.message._id}}.{{this.message.idUser._id}}" type="button" class="w3-button w3-theme-d1 w3-margin-bottom" onclick="removeFavorites(this.id);"><i class="fa fa-thumbs-down"></i> No me gusta</button>  
+    {{else}}
+      <button id="{{this.message._id}}.{{this.message.idUser._id}}" type="button" class="w3-button w3-theme-d1 w3-margin-bottom" onclick="addFavorites(this.id);"><i class="fa fa-thumbs-up"></i> Me gusta</button>  
+    {{/if}}
   </div>
 {{/each}}

@@ -1,106 +1,123 @@
 html,body,h1,h2,h3,h4,h5 {font-family: "Open Sans", sans-serif}
-  #updateErrorName , #updateErrorPasswd,#updateErrorAvatar, #updateErrorMood{
-    text-align: center;
-    padding-bottom: 5%; 
-  }
-  .error {
-    color:red;
-  }
-  .correcto {
-    color:green;
-  }
-  .menuLateral ul{
-    width: 100%;
-  }
-  .menuLateral li{
-    width: 100%;
-    padding-top:5px;
-    padding-bottom:5px; 
-    list-style:none;
-    border-radius: 4px;
-    color:#000;
-    height: 40px;
-    cursor: pointer;
-  }
-  .liMenu{
-    font-size:12px; 
-    font-weight: normal;
-  }
-  .liMenuSelect{
-     font-size:15px; 
-     font-weight: bold;
-    
-  }
+#updateErrorName , #updateErrorPasswd,#updateErrorAvatar, #updateErrorMood{
+  text-align: center;
+  padding-bottom: 5%; 
+}
+.error {
+  color:red;
+}
+.correcto {
+  color:green;
+}
+  
+.menuLateral{
+  padding-top:10px;
+  padding-bottom: 0px;
+ }
 
-  .searchPeople{
-    margin-top: 10px;
-    margin-bottom: 15px;
-    margin-left: 4px;
-  }
-  
-  .name{
-    cursor: pointer;
-    font-size: 20px;
-  }
-  
-  
-  .margin {
-    margin: 10px 10px;
-  }
+.menuLateral ul{
+  width: 100%;
+}
 
-  .margin-10pxTop {
-    margin: -10px 0px;
-  }
+.menuLateral li{
+  width: 100%;
+  list-style:none;
+  border-radius: 4px;
+  color:#000;
+  height: 40px;
+  cursor: pointer;
+}
 
-  .marginLeftRigth15{
-    margin: 0px 15px;
-  }
-  
-  .center{
-    margin: 2px auto;
-  }
+.liMenu{
+  font-size:12px; 
+  font-weight: normal;
+}
 
-  .fontiSize10px{
-    font-size:10px;
-  }
-  
-  .añadido{
-    background: red;
-  }
-  
-  .paddingTop5px{
-    padding-top:5px;
-  }
+.liMenuSelect{
+  font-size:15px; 
+  font-weight: bold; 
+}
 
-  .marginTop10px{
-    margin-top:10px;
-  }
+.searchPeople{
+  margin-top: 10px;
+  margin-bottom: 15px;
+  margin-left: 4px;
+}
   
-  .marginTop16px{
-    margin-top:16px;
-  }
+.name{
+  cursor: pointer;
+  font-size: 20px;
+}
+  
+.name:hover{
+  text-decoration: underline;
+}
+  
+.margin {
+  margin: 10px 10px;
+}
 
-  .noResize {
-    resize:none;
-  }
-  
-  .displayNone{
-    display:none;
-  }
+.margin-left40px{
+  margin-left:40px;
+}
 
-  .marginTop6px{
-    margin-top:6px;  
-  }
+.hidden{
+  visibility:hidden;
+}
 
-  .padding13px{
-    padding:13px;
-  }
+.margin-10pxTop {
+  margin: -10px 0px;
+}
+
+.marginLeftRigth15{
+  margin: 0px 15px;
+}
   
-  .textAlignCenter{
-    text-align:center;
-  }
+.center{
+  margin: 2px auto;
+}
+
+.fontiSize10px{
+  font-size:10px;
+}
   
-  .borderRadius15px{
+.añadido{
+  background: red;
+}
+  
+.paddingTop5px{
+  padding-top:5px;
+}
+
+.marginTop10px{
+  margin-top:10px;
+}
+  
+.marginTop16px{
+  margin-top:16px;
+}
+
+.noResize {
+  resize:none;
+}
+  
+.displayNone{
+  display:none;
+}
+
+.marginTop6px{
+  margin-top:6px;  
+}
+
+.padding13px{
+  padding:13px;
+}
+  
+.textAlignCenter{
+  text-align:center;
+}
+  
+.borderRadius15px{
   border-radius: 15px 15px 15px 15px;
   -moz-border-radius: 15px 15px 15px 15px;
   -webkit-border-radius: 15px 15px 15px 15px;
@@ -136,4 +153,12 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Open Sans", sans-serif}
 
 .paddingtop20{
   padding-top:20px;
+}
+
+.xDeleteMessage{
+  position: relative;
+  top: -25px;
+  right: -10px;
+  font-size: 20px;
+  cursor: pointer;
 }

@@ -1,0 +1,14 @@
+<button class="w3-button w3-padding-large" title="Notifications"><i class="fa fa-bell"></i>     
+{{#if noRead}}
+    <span class="w3-badge w3-right w3-small w3-green">{{noRead}}</span></button>
+{{else}}
+    <span class="w3-badge w3-right w3-small w3-green"></span></button>
+{{/if}}
+     <div id="not" class="w3-dropdown-content w3-card-4 w3-bar-block" style="width:365px">
+        {{#each not}}
+            <a onclick="readNotification('{{{this._id}}}');" class="w3-bar-item w3-button" onmouseover="show('{{{this._id}}}');" onmouseout="hide('{{{this._id}}}');">A {{{this.idUserOrigen.name}}} le gusta tu publicación
+                <span id="{{this._id}}" class="margin-left40px hidden" id="deleteNotification" onclick="deleteNotification('{{{this._id}}}')"><i class="fa fa-times" aria-hidden="true"></i>
+                </span>
+            </a>
+        {{/each}}
+    </div>

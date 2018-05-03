@@ -1,6 +1,8 @@
+let isPerfil = false;
 function init(){
   seeRequests();
   searchAllMessages();
+  seeNotifications();
 }
 
 function myFunction(id) {
@@ -195,6 +197,7 @@ function validation(){
                           moodT[i] = "<a href="+moodT[i]+">"+moodT[i]+"</a>";
                       }    
                   }
+                  moodT = moodT.join(" ");
                   document.getElementById("showMood").innerHTML = moodT;
                 }
             }
@@ -235,6 +238,7 @@ function validation(){
   }
 
 function searchAll(){
+      isPerfil = false; 
       $.ajax({type: "POST",
       url: "searchAll",
       contentType: false,
@@ -246,7 +250,6 @@ function searchAll(){
 }
 
 function searchPerson(name){
-  console.log("esada");
   console.log(name);
     let data = {name:name};
     $.ajax({
@@ -254,12 +257,14 @@ function searchPerson(name){
       url: "searchPerson",
       data: data,
     success: function(res){
+      console.log("entre");
       document.getElementById("resul").innerHTML = res; 
     }
   });
 }
 
 function perfilPerson(id){
+   isPerfil = true;  
     $.ajax({type: "get",
     url: "perfilPerson",
     data: id,
@@ -273,7 +278,6 @@ function perfilPerson(id){
 
 function addFriendPeding(id){
   let data = {id:id};
-  console.log(id);
   $.ajax({
     type: "POST",
     url: "addFriendPeding",
@@ -299,7 +303,6 @@ function removeFriendPeding(id){
 
 function removeFriendPerfil(id){
   let data = {id:id};
-  console.log(id);
   $.ajax({
     type: "POST",
     url: "removeFriend",
@@ -312,7 +315,6 @@ function removeFriendPerfil(id){
 
 function removeFriend(id){
   let data = {id:id};
-  console.log(id);
   $.ajax({
     type: "POST",
     url: "removeFriend",
@@ -322,8 +324,6 @@ function removeFriend(id){
     }
   });
 }
-
-
 
 function seeRequests(){
   $.ajax({
@@ -381,6 +381,7 @@ function searchAllMessagesPerfil(id){
     success: function(res){
       document.getElementById("messageHidden").style.display="none";
       document.getElementById("messages").innerHTML = res;
+      seeNotifications();
 
     }
   });
@@ -432,12 +433,17 @@ function addMessage(){
 
 function addFavorites(id){
   let data = {id:id};
+  let aux = id.split(".");
   $.ajax({type: "POST",
     url: "addFavorites",
     data: data,
     success: function(res){
       if (res.ok == "ok"){
-        searchAllMessages()
+        if (!isPerfil){
+          searchAllMessages();
+        }else{
+          searchAllMessagesPerfil(aux[1]);
+        }
       }
     }
   });
@@ -445,13 +451,76 @@ function addFavorites(id){
 
 function removeFavorites(id){
   let data = {id:id};
+  let aux = id.split(".");
   $.ajax({type: "POST",
     url: "removeFavorites",
     data: data,
     success: function(res){
       if (res.ok == "ok"){
-        searchAllMessages()
+        if (!isPerfil){
+          searchAllMessages();
+        }else{
+          searchAllMessagesPerfil(aux[1]);
+        }
       }
     }
   });
+}
+
+function seeNotifications(){
+  $.ajax({type: "POST",
+    url: "seeNotifications",
+    success: function(res){
+      document.getElementById("not").innerHTML = res;
+    }
+  });
+}
+
+function readNotification(id){
+  let data = {id:id}
+  $.ajax({type: "POST",
+    url: "readNotification",
+    data: data,
+    success: function(res){
+      if (res.ok == "ok"){
+        seeNotifications();
+      }
+    }
+  });
+}
+
+function deleteNotification(id){
+  let data = {id:id}
+  $.ajax({type: "POST",
+    url: "deleteNotification",
+    data: data,
+    success: function(res){
+      if (res.ok == "ok"){
+        seeNotifications();
+      }
+    }
+  });
+}
+
+function show(id){
+  document.getElementById(id).style.visibility = "visible";
+}
+
+function hide(id){
+  document.getElementById(id).style.visibility = "hidden";
+}
+
+function deleteMessage(id){
+  console.log(id);
+  let data = {id:id}
+  $.ajax({type: "POST",
+    url: "deleteMessage",
+    data: data,
+    success: function(res){
+      if (res.ok == "ok"){
+        searchAllMessages();
+      }
+    }
+  });
+
 }

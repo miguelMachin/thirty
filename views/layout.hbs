@@ -22,8 +22,10 @@
       if(data.fun === "updateMessage"){
         document.getElementById("messageHidden").style.display="";
       }
+      if(data.fun === "updateNotifications"){
+        seeNotifications();
+      }
       if(data.fun === "notUpdate"){
-        console.log("entre");
         document.getElementById("messageHidden").style.display="none";
       } 
     })

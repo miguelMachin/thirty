@@ -1,3 +1,4 @@
+<body class="w3-theme-l5" onload="seeNotifications();">
 <!-- Navbar -->
 <div class="w3-top">
  <div class="w3-bar w3-theme-d2 w3-left-align w3-large">
@@ -5,13 +6,7 @@
   <a href="/vistaPrincipal" class="w3-bar-item w3-button w3-padding-large w3-theme-d4"><i class="fa fa-home w3-margin-right"></i></a>
   <a href="/vistaBuscar" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white" title="Buscar"><i class="fa fa-globe"></i></a>
   <a href="/vistaUpdate" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white" title="Ajustes"><i class="fa fa-user"></i></a>
-  <div class="w3-dropdown-hover w3-hide-small">
-    <button class="w3-button w3-padding-large" title="Notifications"><i class="fa fa-bell"></i><span class="w3-badge w3-right w3-small w3-green">3</span></button>     
-    <div class="w3-dropdown-content w3-card-4 w3-bar-block" style="width:300px">
-      <a href="#" class="w3-bar-item w3-button">One new friend request</a>
-      <a href="#" class="w3-bar-item w3-button">John Doe posted on your wall</a>
-      <a href="#" class="w3-bar-item w3-button">Jane likes your post</a>
-    </div>
+  <div id="not" class="w3-dropdown-hover w3-hide-small">
   </div>
   <a href="/logout" class="w3-bar-item w3-button w3-hide-small w3-right w3-padding-large w3-hover-white" title="Cerrar Sesión">
     <!--<img src="/w3images/avatar2.png" class="w3-circle" style="height:23px;width:23px" alt="Avatar">-->
@@ -74,7 +69,7 @@
               <label for="repeatPasswd">Nueva Contraseña</label>
               <input name="repeatPasswd" type="password" class="form-control" id="repeatPasswd" aria-describedby="passwd" >
               <br>
-              <button class="btn btn-primary" onclick="updatePasswd()"><i class="fa fa-pencil"></i> Actualzar</button>
+              <button class="w3-button w3-theme-d1 w3-margin-bottom" onclick="updatePasswd()"><i class="fa fa-pencil"></i> Actualzar</button>
           </div>
           <div id="updateErrorPasswd"><span id="errSpan" class="errSpan error"></span></div>
         </div>
@@ -84,7 +79,7 @@
                 <input name="name" type="text" class="form-control" id="name" aria-describedby="nombre" placeholder="nombre Completo" value="{{{user.name}}}" >
                 <br>
                     
-                <button class="btn btn-primary" onclick="updateName()"><i class="fa fa-pencil"></i> Actualzar</button>
+                <button class="w3-button w3-theme-d1 w3-margin-bottom" onclick="updateName()"><i class="fa fa-pencil"></i> Actualzar</button>
                     
             </div>
           <div id="updateErrorName"><span id="errSpan" class="errSpan error"></span></div>
@@ -94,7 +89,7 @@
                     <label for="nombre">Estado</label>
                     <input name="name" type="text" class="form-control" id="mood" aria-describedby="nombre" placeholder="Estoy feliz" value="{{{user.mood}}}">
                     <br>
-                    <button class="btn btn-primary" onclick="updateMood()"><i class="fa fa-pencil"></i> Actualzar</button>
+                    <button class="w3-button w3-theme-d1 w3-margin-bottom" onclick="updateMood()"><i class="fa fa-pencil"></i> Actualzar</button>
                 </div>
              <div id="updateErrorMood"><span id="errSpan" class="errSpan error"></span></div>
         </div>
@@ -104,7 +99,7 @@
                     <label for="exampleInputPassword1">Avatar</label>
                     <input id="avatar" name="img" type="file"  class="form-control">
                     <br>
-                    <button class="btn btn-primary" onclick="updateAvatar()"><i class="fa fa-pencil"></i> Actualzar</button>
+                    <button class="w3-button w3-theme-d1 w3-margin-bottom" onclick="updateAvatar()"><i class="fa fa-pencil"></i> Actualzar</button>
                 </div>
             </form>
              <div id="updateErrorAvatar"><span id="errSpan" class="errSpan error "></span></div>

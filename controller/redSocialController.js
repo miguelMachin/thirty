@@ -4,6 +4,7 @@ const socketApi = require('./socketApi');
 const mongoose = require('./../config/conexion');
 const User = require('./../models/users');
 const Message = require('./../models/message');
+const Notification = require('./../models/notification');
 const base64 = require('base-64');
 //const multer = require('multer');
 const fs = require('fs');
@@ -131,6 +132,7 @@ function updateMood (req,res){
             mood[i] = "<a href="+mood[i]+">"+mood[i]+"</a>";
         }    
     }
+    mood = mood.join(" ");
     User.update({email: req.session.user.email }, { $set: { mood: mood }}, function(err,user){
         if (err) {
             throw err;
@@ -217,9 +219,9 @@ function searchAll(req,res){
             let dummy ="";
             for (let i = 0; i < peoples.length; i++) {
                 if (isSome(peoples[i],user.friend)){
-                    dummy = {user:peoples[i],isFriend:true};
+                    dummy = {user:peoples[i],isFriend:true,date:formaDateBirthdate(peoples[i].birthdate)};
                 }else{
-                    dummy = {user:peoples[i],isFriend:false};
+                    dummy = {user:peoples[i],isFriend:false,date:formaDateBirthdate(peoples[i].birthdate)};
                 }
                 friends.push(dummy);
             }
@@ -238,14 +240,29 @@ function isSome(user,array){
 }
 
 function searchPerson(req,res){
-   // console.log(req.body.name);
+    let arrayUser = new Array();
    User.find({
        $and: [
            {_id:{$ne:req.session.user._id}},
            {name:{$regex: '.*' + req.body.name + '.*'}}
-        ]},function(err,user){
+        ]},function(err,peoples){
         if (err)
-            res.render("respuestaBuscar",{layout:false,users:user});
+            console.log(err);
+        User.findById(req.session.user._id,function(err,user){
+            if (err)
+                console.log(err);
+            let friends = new Array();
+            let dummy ="";
+            for (let i = 0; i < peoples.length; i++) {
+                if (isSome(peoples[i],user.friend)){
+                    dummy = {user:peoples[i],isFriend:true,date:formaDateBirthdate(peoples[i].birthdate)};
+                }else{
+                    dummy = {user:peoples[i],isFriend:false,date:formaDateBirthdate(peoples[i].birthdate)};
+                }
+                friends.push(dummy);
+            }
+               res.render("respuestaBuscar",{layout:false,users:friends});
+        });
     });
 }
 
@@ -386,9 +403,9 @@ function searchAllMessages(req,res){
             let aux = "";
             for (let i = 0; i < mes.length; i++) {
                 if(isSome(mes[i],user.favorites)){
-                    aux = {message:mes[i],dateCompare:formatDateMessage(mes[i].date),isFavorite:true};
+                    aux = {message:mes[i],dateCompare:formatDateMessage(mes[i].date),isFavorite:true,myMessage:true};
                 }else{
-                    aux = {message:mes[i],dateCompare:formatDateMessage(mes[i].date)};
+                    aux = {message:mes[i],dateCompare:formatDateMessage(mes[i].date,),myMessage:true};
                 }
                 arrayMes.push(aux);
             }
@@ -410,9 +427,9 @@ function searchAllMessagesPerfil(req,res){
             let aux = "";
             for (let i = 0; i < mes.length; i++) {
                 if(isSome(mes[i],user.favorites)){
-                    aux = {message:mes[i],dateCompare:formatDateMessage(mes[i].date),isFavorite:true};
+                    aux = {message:mes[i],dateCompare:formatDateMessage(mes[i].date),isFavorite:true,myMessage:false};
                 }else{
-                    aux = {message:mes[i],dateCompare:formatDateMessage(mes[i].date)};
+                    aux = {message:mes[i],dateCompare:formatDateMessage(mes[i].date),myMessage:false};
                 }
                 arrayMes.push(aux);
             }
@@ -432,23 +449,74 @@ function formatDateMessage(date){
     return moment(dateCompare,dateFormat).locale('es').fromNow();
 }
 
-
-function addFavorites(req,res){
-    console.log(req.body.id);
-    User.findByIdAndUpdate(req.session.user._id,{$push:{favorites:req.body.id}},function(err,user){
+function deleteMessage(req,res){
+    Message.remove({_id:req.body.id},function(err,mes){
         if (err) console.log(err);
         res.send({ok:"ok"});
     })
-    
+}
+
+function addFavorites(req,res){
+    let aux = req.body.id.split(".");
+    User.findByIdAndUpdate(req.session.user._id,{$push:{favorites:aux[0]}},function(err,user){
+        if (err) console.log(err);
+        let id = mongoose.Types.ObjectId(); 
+        let newNotification = new Notification({
+            _id: id,
+            idUserOrigen: req.session.user._id,
+            idUserDest: aux[1],
+            idMessage: aux[0],
+            read: false
+        });
+        newNotification.save(function(err){
+            if (err) console.log(err);
+            User.findByIdAndUpdate(aux[1],{$push:{notification:id}},function(err,us){
+                if (err) console.log(err);
+                socketApi.update("updateNotifications");
+                res.send({ok:"ok"});
+            })
+        })
+  
+    })  
 }
 
 function removeFavorites(req,res){
-    User.findByIdAndUpdate(req.session.user._id,{$pull:{favorites:req.body.id}},function(err,user){
+    let aux = req.body.id.split(".");
+    User.findByIdAndUpdate(req.session.user._id,{$pull:{favorites:aux[0]}},function(err,user){
         if (err) console.log(err);
         res.send({ok:"ok"});
     }) 
 }
 
+
+function seeNotifications(req,res){
+    Notification.find({idUserDest:req.session.user._id}).populate("idUserOrigen").sort({date:-1}).exec(function(err,not){
+        if (err) console.log(err);
+        let noRead = 0;
+        for (let i = 0; i < not.length; i++) {
+           if(!not[i].read){
+               noRead++;
+           }
+        }
+        res.render("respuestaNotificaciones",{layout:false,not:not,noRead:noRead});
+    })
+}
+
+function readNotification(req,res){
+    console.log(req.body.id)
+    Notification.update({_id:req.body.id},{$set:{read:true}},function(err,not){
+        console.log("entre");
+        if (err) console.log(err);
+        res.send({ok:"ok"});
+    });
+}
+
+function deleteNotification(req,res){
+    Notification.remove({_id:req.body.id},function(err,del){
+        if (err) console.log(err);
+        res.send({ok:"ok"});
+    });
+}
 
 module.exports = {
    // getUser
@@ -477,6 +545,10 @@ module.exports = {
    searchAllMessages,
    addFavorites,
    removeFavorites,
-   searchAllMessagesPerfil
+   searchAllMessagesPerfil,
+   seeNotifications,
+   readNotification,
+   deleteNotification,
+   deleteMessage
    
 };

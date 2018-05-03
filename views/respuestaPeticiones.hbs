@@ -5,14 +5,12 @@
 
 {{#each user}}
     <div class="w3-container">
-        <span>{{this.name}}</span>
-         <br>
+         <div class="center"><span id={{this._id}} class="w3-center name" onclick="perfilPerson(this.id)">{{this.name}}</span></div>
             {{#if this.avatar}}
                 <img src="data:image/jpg;base64,{{this.avatar}}" alt="Avatar" style="width:50%"/>
             {{else}}
                  <img src="/images/avatarDef.png" alt="Avatar" style="width:50%">
             {{/if}} 
-          
         
         <div class="w3-row w3-opacity">
             <div class="w3-half">
