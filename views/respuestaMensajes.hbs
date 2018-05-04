@@ -10,17 +10,19 @@
   {{else}}
     <img src="/images/avatarDef.png" alt="Avatar" class="w3-left w3-circle w3-margin-right" style="width:60px; height:60px;">
   {{/if}}
-   {{#if this.myMessage}}
-    <span id="{{this.message._id}}" class="w3-right xDeleteMessage hidden" onclick="deleteMessage('{{{this.message._id}}}')"><i class="fa fa-times" aria-hidden="true"></i></span>
+  {{#if this.myMessage}}
+    <span id="{{this.message._id}}" class="w3-right xDeleteMessage hidden color607d8b" onclick="deleteMessage('{{{this.message._id}}}')"><i class="fa fa-times" aria-hidden="true"></i></span>
+     <span class="w3-right w3-opacity">{{this.dateCompare}}</span>
+  {{else}}
+    <span class="w3-right w3-opacity" style="margin-right: 16px;">{{this.dateCompare}}</span>
   {{/if}} 
-  <span class="w3-right w3-opacity">{{this.dateCompare}}</span>
   <div class="center"><span id={{this.message.idUser._id}} class="w3-center name" onclick="perfilPerson(this.id)">{{this.message.idUser.name}}</span></div><br>
   <hr class="w3-clear">
   <p>{{{this.message.text}}}</p>
   <div class="w3-row-padding" style="margin:0 -16px">
     {{#if this.message.image}}
       <div class="w3-half">
-        <img src="data:image/jpg;base64,{{this.message.image}}" style="width:100%" class="w3-margin-bottom borderRadius15px">
+        <img src="data:image/jpg;base64,{{this.message.image}}" style="width:100%;height:100%;" class="w3-margin-bottom borderRadius15px">
       </div>
     {{/if}}
    </div>

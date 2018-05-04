@@ -1,17 +1,18 @@
+<body>
 <div class="container">
      <div class="col-sm-4 col-lg-6 mx-auto w-50 p-3 ">
          <div class="mx-auto textAlignCenter"><img src="/images/logo.jpg"/></div>
         <form method="post" action="principal">
             <div class="form-group">
-                <label for="exampleInputEmail1">Email address</label>
-                <input name="email" type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="email">
+                <label for="exampleInputEmail1">Correo Electrónico</label>
+                <input name="email" type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="usuario@correo.es">
             </div>
             <div class="form-group">
-                <label for="exampleInputPassword1">Password</label>
-                <input name="passwd" type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
+                <label for="exampleInputPassword1">Contraseña</label>
+                <input name="passwd" type="password" class="form-control" id="exampleInputPassword1" placeholder="Contraseña">
             </div>
-            <button type="submit" class="btn btn-primary">Entrar</button>
-            <a href="vistaRegistro">Registrar</a>
+            <button type="submit" class="w3-button w3-theme marginTop10px">Entrar</button>
+            <span><a class="noBoton"href="vistaRegistro">Registrar</a></span>
         </form>
         <div class={{status}}><p>{{message}}</p></div>
      </div>

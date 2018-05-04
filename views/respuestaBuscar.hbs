@@ -14,9 +14,9 @@
             <p><i class="fa fa-home fa-fw w3-margin-right w3-text-theme"></i> {{this.user.city}},{{this.user.country}}</p>
             <p><i class="fa fa-birthday-cake fa-fw w3-margin-right w3-text-theme"></i> {{date}}</p>
             {{#if this.isFriend}}
-                <p><button id="{{this.user._id}}" class="w3-button w3-theme-d1 w3-margin-bottom fontiSize10px" onclick="removeFriend(this.id)";><i class="fa fa-remove" style="margin-right: 10px"></i>Borrar Amigos</button></p>
+                <p class="marginBotton5px textAlignCenter"><button id="{{this.user._id}}" class="w3-button w3-theme-d1 w3-margin-bottom fontiSize10px" onclick="removeFriend(this.id)"><i class="fa fa-remove" style="margin-right: 10px"></i>Borrar Amigo</button></p>
             {{else}}
-                <p><button id="{{this.user._id}}" class="w3-button w3-theme-d1 w3-margin-bottom fontiSize10px" onclick="addFriendPeding(this.id)";><i class="fa fa-user-plus" style="margin-right: 10px"></i>Añadir Amigos</button></p>
+                <p class="marginBotton5px textAlignCenter"><button id="{{this.user._id}}" class="w3-button w3-theme-d1 w3-margin-bottom fontiSize10px" onclick="addFriendPeding(this.id)"><i class="fa fa-user-plus" style="margin-right: 10px"></i>Añadir Amigo</button></p>
             {{/if}}
         </div>
     </div>            

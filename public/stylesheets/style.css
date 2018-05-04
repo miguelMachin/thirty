@@ -5,6 +5,7 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Open Sans", sans-serif}
 }
 .error {
   color:red;
+  width: auto;
 }
 .correcto {
   color:green;
@@ -155,10 +156,70 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Open Sans", sans-serif}
   padding-top:20px;
 }
 
+.marginBotton13px{
+  margin-bottom: -13px;
+}
+
+.marginBotton5px{
+  margin-bottom: -5px;
+}
+
 .xDeleteMessage{
   position: relative;
   top: -25px;
   right: -10px;
   font-size: 20px;
   cursor: pointer;
+}
+
+.uploadFile{
+  height: 26px;
+  border: 1px solid #ced4da;
+  border-top: none;
+  position: relative;
+  top: -1px;
+}
+
+.uploadFile label{
+  position: relative;
+  left: 2px;
+  cursor: pointer;
+  top: 4px;
+}
+
+.textArea{
+  border-bottom:none ;
+  border-bottom-right-radius: 0;
+  border-bottom-left-radius: 0
+}
+
+.textArea:focus{
+  -webkit-box-shadow:none;
+  box-shadow: none;
+  border-color:#ced4da;;
+}
+
+.floatLeft{
+  float:left;
+}
+
+.marginTop3px{
+  margin-top: 3px;
+}
+
+.color607d8b{
+  color:#607d8b;
+}
+
+.color607d8b:hover{
+  color:#ccc;
+}
+
+.paddingBottom1px{
+  padding-bottom: 1px;
+}
+
+.noBoton{
+  position: relative;
+  top: 6px;
 }

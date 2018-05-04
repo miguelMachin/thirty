@@ -34,9 +34,9 @@ function login(req,res){
 }
 
 function formaDateBirthdate(date){
-    let day = date.getDate().length == 1 ? "0"+date.getDate() : date.getDate();
-    let month = ""+(date.getMonth()+1).length == 1 ? "0"+date.getMonth()+1 : date.getMonth()+1;
-    let dateCompare =+day+"-"+month+"-"+date.getFullYear();
+    let day = date.getDate() < 10 ? "0"+date.getDate() : date.getDate();
+    let month = (date.getMonth()+1) < 10 ? "0"+(date.getMonth()+1) : (date.getMonth()+1);
+    let dateCompare =+day+"/"+month+"/"+date.getFullYear();
     return dateCompare;
 }
 
@@ -461,9 +461,23 @@ function formatDateMessage(date){
 
 function deleteMessage(req,res){
     Message.remove({_id:req.body.id},function(err,mes){
-        if (err) console.log(err);
+        if(err) console.log(err);
         res.send({ok:"ok"});
     })
+    /*User.find({},function(err,a){
+        if (err) console.log(err);
+        for (let i = 0; i < a.favorites.length; i++) {
+            console.log(a[i]._id);
+            User.update({_id:a[i]._id},{$pull:{favorites:req.body.id}},function(err,user){
+                console.log(user);
+                if (err) console.log(err);
+            }) 
+        }
+        
+    })*/
+
+
+   
 }
 
 function addFavorites(req,res){
@@ -480,11 +494,11 @@ function addFavorites(req,res){
         });
         newNotification.save(function(err){
             if (err) console.log(err);
-            User.findByIdAndUpdate(aux[1],{$push:{notification:id}},function(err,us){
-                if (err) console.log(err);
+            //User.findByIdAndUpdate(aux[1],{$push:{notification:id}},function(err,us){
+                //if (err) console.log(err);
                 socketApi.update("updateNotifications");
                 res.send({ok:"ok"});
-            })
+           // })
         })
   
     })  

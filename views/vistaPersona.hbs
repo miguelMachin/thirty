@@ -32,12 +32,12 @@
                   <img src="/images/avatarDef.png" class="w3-circle" style="height:106px;width:106px" alt="Avatar"/>
               {{/if}} 
           </p>
-           <div class="center"><h3>{{user.name}}</h3></div>
+           <div class="center textAlignCenter"><h3>{{user.name}}</h3></div>
           <br>
             {{#if friend}}
-              <p><button id="{{this.user._id}}" class="w3-button w3-theme-d1 w3-margin-bottom fontiSize10px" onclick="removeFriend(this.id)";><i class="fa fa-remove" style="margin-right: 10px"></i>Borrar Amigos</button></p>
+              <p class="marginBotton13px"><button id="{{this.user._id}}" class="w3-button w3-theme-d1" onclick="removeFriend(this.id)";><i class="fa fa-remove" style="margin-right: 10px"></i>Borrar Amigos</button></p>
             {{else}}
-              <p><button id="{{this.user._id}}" class="w3-button w3-theme-d1 w3-margin-bottom fontiSize10px" onclick="addFriendPeding(this.id)";><i class="fa fa-user-plus" style="margin-right: 10px"></i>Añadir Amigos</button></p>
+              <p class="marginBotton13px"><button id="{{this.user._id}}" class="w3-button w3-theme-d1" onclick="addFriendPeding(this.id)";><i class="fa fa-user-plus" style="margin-right: 10px"></i>Añadir Amigos</button></p>
             {{/if}}
          <hr>
          <p><i class="fa fa-pencil fa-fw w3-margin-right w3-text-theme"></i> {{{user.mood}}}</p>
@@ -52,10 +52,10 @@
       <!-- Interests --> 
       <div class="w3-card w3-round w3-white w3-hide-small">
         <div class="w3-container">
-          <p>Interests</p>
+          <p>Intereses</p>
           <p>
             {{#each user.interests}}
-                 <span class="w3-tag w3-small w3-theme-d5">{{this}}</span>
+                  <span class="w3-tag w3-small w3-theme-d5 paddingBottom1px">{{this}}</span>
             {{/each}}
             <!--
             <span class="w3-tag w3-small w3-theme-d5">News</span>
