@@ -28,15 +28,15 @@ function login(req,res){
             req.session.date = formaDateBirthdate(user[0].birthdate);
             res.render('principal',{user:req.session.user,date:req.session.date});
         }else{
-            res.render("index",{message:"USUARIO O CONTRASEÑA INCORRECTO",status:"error"});
+            res.render("index",{message:"Usuario o Contraseña incorrecto",status:"error"});
         }
      });
 }
 
 function formaDateBirthdate(date){
-    let day = date.getDate() < 10 ? "0"+date.getDate() : date.getDate();
+    let day = (date.getDate()) < 10 ? "0"+date.getDate() : date.getDate();
     let month = (date.getMonth()+1) < 10 ? "0"+(date.getMonth()+1) : (date.getMonth()+1);
-    let dateCompare =+day+"/"+month+"/"+date.getFullYear();
+    let dateCompare =day+"/"+month+"/"+date.getFullYear();
     return dateCompare;
 }
 
@@ -70,8 +70,8 @@ function registrar(req,res){
                 friendPending: [],
                 interests: req.body.interests,
                 avatar:"",
-                birthdate:req.body.birthdate,
-                message:[]
+                birthdate:req.body.birthdate
+                //message:[]
             });
             insertUser.save(function(error) {
                  if (error) {
@@ -167,7 +167,7 @@ function updatePasswd (req, res){
                         }
                     });
                 }else{
-                    res.render("respuestaVistaUpdate",{layout : false,message:"la contraseña introducida no es correcta",status:"error"});
+                    res.render("respuestaVistaUpdate",{layout : false,message:"La contraseña introducida no es correcta",status:"error"});
                 }      
             }
         });  
@@ -187,7 +187,6 @@ function updateAvatar(req,res){
         }
         else{
             //user.ext = user._id+"."+ext[1];;
-            console.log("entre");
             res.render("respuestaVistaUpdate",{layout : false,message:"Actualizado Correctamennte",status:"correcto"});
         }      
             
@@ -246,7 +245,11 @@ function searchPerson(req,res){
    User.find({
        $and: [
            {_id:{$ne:req.session.user._id}},
-           {name:{$regex: '.*' + req.body.name + '.*'}}
+           {
+            $or: [
+                {name:{$regex: '.*' + req.body.name.toUpperCase() + '.*'}},
+                {name:{$regex: '.*' + req.body.name.toLowerCase() + '.*'}}
+        ]}
         ]},function(err,peoples){
         if (err)
             console.log(err);
@@ -382,14 +385,16 @@ function addMessage(req,res){
     });
     newMessage.save(function(error) {
         if(error) console.log(error);
+        socketApi.update("updateMessage");
+        res.send({ok:"ok"});
     });
-    User.update({_id:req.session.user._id},{$push:{messages:id}},function(err,act){
+    /*User.update({_id:req.session.user._id},{$push:{messages:id}},function(err,act){
         if (err) console.log(err);
 
         socketApi.update("updateMessage");
         res.send({ok:"ok"});
         
-    });
+    });*/
 }
 
 function searchAllMessages(req,res){
@@ -460,24 +465,16 @@ function formatDateMessage(date){
 }
 
 function deleteMessage(req,res){
-    Message.remove({_id:req.body.id},function(err,mes){
-        if(err) console.log(err);
-        res.send({ok:"ok"});
-    })
-    /*User.find({},function(err,a){
+    Message.findByIdAndRemove({_id:req.body.id}).exec(function(err,e){
         if (err) console.log(err);
-        for (let i = 0; i < a.favorites.length; i++) {
-            console.log(a[i]._id);
-            User.update({_id:a[i]._id},{$pull:{favorites:req.body.id}},function(err,user){
-                console.log(user);
-                if (err) console.log(err);
-            }) 
-        }
-        
-    })*/
 
+        User.update({},{$pull :{"favorites":req.body.id}}).exec(function(er,a){
+            if (er) console.log(er);
+            console.log(a);
+            res.send({ok:"ok"});
+        });
 
-   
+    })  
 }
 
 function addFavorites(req,res){
@@ -500,7 +497,6 @@ function addFavorites(req,res){
                 res.send({ok:"ok"});
            // })
         })
-  
     })  
 }
 

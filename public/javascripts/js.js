@@ -44,7 +44,13 @@ function validation() {
   let passwdRepe = document.getElementById("passwdRepe");
   let birthdate = document.getElementById("birthdate");
   let city = document.getElementById("city");
-  
+  name.style.borderColor = "#ced4da";
+  email.style.borderColor = "#ced4da";
+  passwd.style.borderColor = "#ced4da";
+  passwdRepe.style.borderColor = "#ced4da";
+  birthdate.style.borderColor = "#ced4da";
+  city.style.borderColor = "#ced4da";
+
   if (name.value == "") {
     name.style.borderColor = "red";
     isOk = false;
@@ -460,6 +466,8 @@ function addMessage() {
         processData: false,
         success: function (res) {
           if (res.ok == "ok") {
+            text.value="";
+            imgUpload.value= "";
             searchAllMessages()
           }
         }
@@ -565,4 +573,23 @@ function deleteMessage(id) {
       }
     }
   });
+}
+
+function showImage(obj){
+  document.getElementById("body").appendChild(document.createElement("DIV")).setAttribute("id", "lightbox");
+  let lightbox = document.getElementById("lightbox");
+  lightbox.className = "lightbox";
+  lightbox.appendChild(document.createElement("DIV")).setAttribute("id", "modal");
+  let modal = document.getElementById("modal");
+  modal.className = "modal";
+  modal.innerHTML = "<img id=\"imgModal\"  class=\"imgModal\"src=\""+obj+"\"/>";
+  modal.innerHTML += "<div onclick=\"closeModal();\" id=\"closeModal\" class=\"closeModal colorccc\"><i class=\"fa fa-times\" aria-hidden=\"true\"></i></div>";
+  let imgModal = document.getElementById("imgModal");
+  modal.style.marginTop = "-"+(imgModal.height/2)+"px";
+  modal.style.marginLeft = "-"+(imgModal.width/2)+"px";
+}
+
+function closeModal(){
+  let lightbox = document.getElementById("lightbox");
+  lightbox.remove();
 }

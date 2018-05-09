@@ -1,4 +1,10 @@
 html,body,h1,h2,h3,h4,h5 {font-family: "Open Sans", sans-serif}
+
+body{
+  background:url("/images/bakcground.jpg");
+  background-attachment: fixed;
+  background-size: 100%;
+}
 #updateErrorName , #updateErrorPasswd,#updateErrorAvatar, #updateErrorMood{
   text-align: center;
   padding-bottom: 5%; 
@@ -47,7 +53,7 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Open Sans", sans-serif}
   
 .name{
   cursor: pointer;
-  font-size: 20px;
+  font-size: 15px;
 }
   
 .name:hover{
@@ -222,4 +228,76 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Open Sans", sans-serif}
 .noBoton{
   position: relative;
   top: 6px;
+}
+
+.fontiSize12px{
+  font-size:12px
+}
+
+.avatar{
+  height:106px;
+  width:106px
+}
+
+.pointer {
+  cursor: pointer;
+}
+
+.lightbox{
+  width: 100%;
+  height: 100%;
+  position:fixed;
+  top: 0;
+  left: 0;
+  z-index: 10;
+  background: rgba(0,0,0,.8);
+}
+
+.modal{
+  display: inline-block;
+  position: relative;
+  border:5px #4d636f solid;
+  left:50%;
+  top:50%;
+  max-width: 70%;
+  max-height: 70%;
+}
+
+.imgModal{
+  width: 100%;
+  height: 100%;
+}
+
+.closeModal{
+  cursor: pointer;
+  border-radius:0px 0px 0px 25px;
+  position: absolute;
+  right: 0px;
+  top: -10px;
+  border:5px #4d636f solid;
+  font-size: 30px;
+  background-color:#4d636f;
+  width: 48px;
+  height: 48px;
+  text-align: center;
+}
+
+.colorccc{
+  color:#ccc;
+}
+
+.colorccc:hover{
+  color:#607d8b;
+}
+
+.white{
+  background: white;
+}
+
+.logo {
+  width: 50px;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  height: 27px;
 }

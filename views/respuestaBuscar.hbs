@@ -3,15 +3,15 @@
         <div class="w3-container" >
             <p class="w3-center">
                 {{#if this.user.avatar}}
-                     <img src="data:image/jpg;base64,{{this.user.avatar}}" class="w3-circle" style="height:106px;width:106px" alt="Avatar"/>
+                     <img src="data:image/jpg;base64,{{this.user.avatar}}" class="w3-circle avatar pointer" alt="Avatar" onclick="showImage(this.src)"/>
                 {{else}}
-                    <img src="/images/avatarDef.png" class="w3-circle" style="height:106px;width:106px" alt="Avatar">
+                    <img src="/images/avatarDef.png" class="w3-circle avatar" alt="Avatar">
                 {{/if}}           
             </p>
-            <div class="center"><span id={{this.user._id}} class="w3-center name" onclick="perfilPerson(this.id)">{{this.user.name}}</span></div>
+            <div class="center textAlignCenter"><span id={{this.user._id}} class="w3-center name" onclick="perfilPerson(this.id)">{{this.user.name}}</span></div>
             <hr>
             <p><i class="fa fa-pencil fa-fw w3-margin-right w3-text-theme"></i> {{{this.user.mood}}}</p>
-            <p><i class="fa fa-home fa-fw w3-margin-right w3-text-theme"></i> {{this.user.city}},{{this.user.country}}</p>
+            <p><i class="fa fa-home fa-fw w3-margin-right w3-text-theme"></i> {{this.user.city}}, {{this.user.country}}</p>
             <p><i class="fa fa-birthday-cake fa-fw w3-margin-right w3-text-theme"></i> {{date}}</p>
             {{#if this.isFriend}}
                 <p class="marginBotton5px textAlignCenter"><button id="{{this.user._id}}" class="w3-button w3-theme-d1 w3-margin-bottom fontiSize10px" onclick="removeFriend(this.id)"><i class="fa fa-remove" style="margin-right: 10px"></i>Borrar Amigo</button></p>

@@ -3,11 +3,12 @@
 <div class="w3-top">
  <div class="w3-bar w3-theme-d2 w3-left-align w3-large">
   <a class="w3-bar-item w3-button w3-hide-medium w3-hide-large w3-right w3-padding-large w3-hover-white w3-large w3-theme-d2" href="javascript:void(0);" onclick="openNav()"><i class="fa fa-bars"></i></a>
-  <a href="/vistaPrincipal" class="w3-bar-item w3-button w3-padding-large w3-theme-d4"><i class="fa fa-home w3-margin-right"></i></a>
+  <a title="Inicio" href="/vistaPrincipal"><div class="w3-bar-item w3-button w3-padding-large white"><img class="logo" src="/images/logo2.png"></div></a>
   <a href="/vistaBuscar" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white" title="Buscar"><i class="fa fa-globe"></i></a>
   <a href="/vistaUpdate" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white" title="Ajustes"><i class="fa fa-cog" aria-hidden="true"></i></a>
   <div id="not" class="w3-dropdown-hover w3-hide-small">
   </div>
+  
   <a href="/logout" class="w3-bar-item w3-button w3-hide-small w3-right w3-padding-large w3-hover-white" title="Cerrar Sesión">
     <!--<img src="/w3images/avatar2.png" class="w3-circle" style="height:23px;width:23px" alt="Avatar">-->
      <i class="fa fa-sign-out" aria-hidden="true"></i>
@@ -25,15 +26,15 @@
         <div class="w3-container paddingtop20">
          <p class="w3-center">
             {{#if user.avatar}}
-                <img src="data:image/jpg;base64,{{user.avatar}}" class="w3-circle" style="height:106px;width:106px" alt="Avatar"/>
+                <img title="Ampliar imagen" src="data:image/jpg;base64,{{user.avatar}}" class="w3-circle avatar pointer" alt="Avatar" onclick="showImage(this.src)"/>
             {{else}}
-                <img src="/images/avatarDef.png" class="w3-circle" style="height:106px;width:106px" alt="Avatar"/>
+                <img src="/images/avatarDef.png" class="w3-circle avatar " alt="Avatar"/>
             {{/if}} 
         </p> 
-        <div class="center textAlignCenter"><h3>{{user.name}}</h3></div>
+        <div class="center textAlignCenter"><h4>{{user.name}}</h4></div>
          <hr>
          <p><i class="fa fa-pencil fa-fw w3-margin-right w3-text-theme"></i> {{{user.mood}}}</p>
-         <p><i class="fa fa-home fa-fw w3-margin-right w3-text-theme"></i> {{user.city}},{{user.country}}</p>
+         <p><i class="fa fa-home fa-fw w3-margin-right w3-text-theme"></i> {{user.city}}, {{user.country}}</p>
          <p><i class="fa fa-birthday-cake fa-fw w3-margin-right w3-text-theme"></i> {{date}}</p>
         </div>
       </div>
@@ -80,12 +81,12 @@
                   <textarea id="text" name="text" class="form-control noResize textArea" rows="2" placeholder="Escribe aquí"></textarea>
                   <div id="uploadFile" class="uploadFile">
                     <label>
-                      <i class="fa fa-picture-o color607d8b" aria-hidden="true"></i>
+                      <i title="Añadir imagen" class="fa fa-picture-o color607d8b" aria-hidden="true"></i>
                       <input id="imgUpload" type="file"  accept=".jpeg, .jpg" name="img" class="displayNone"/>
                   </label>
                   </div>
                   
-                  <button type="button" class="w3-button w3-theme marginTop10px floatLeft" onclick="addMessage();"><i class="fa fa-pencil"></i> Publicar</button>
+                  <button title="Publicar" type="button" class="w3-button w3-theme marginTop10px floatLeft" onclick="addMessage();"><i class="fa fa-pencil"></i> Publicar</button>
                   <div id="parentErroText" class="padding13px floatLeft marginTop3px"><span id="erroText" class="error"></span></div>
               </form>
             </div>
@@ -93,8 +94,8 @@
         </div>
       </div>
         <div class="w3-col m12 paddingMessageHidden">
-          <div class="messageHidden" id="messageHidden">
-            <div id="newMessages" class="textAlignCenter width100 colorBlue" onclick="searchAllMessages();"><span>Nuevos Mensajes</span></div>
+          <div class="messageHidden" id="messageHidden" onclick="searchAllMessages();">
+            <div id="newMessages" class="textAlignCenter width100 colorBlue"><span>Nuevos Mensajes</span></div>
           </div>
       </div>
       

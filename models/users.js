@@ -15,7 +15,7 @@ let userSchema = new Schema({
     friendPending: [{ type: Schema.ObjectId, ref: "users" }],
     avatar : {type:String},
     birthdate : {type: Date},
-    messages:[{type: Schema.Types.ObjectId, ref: "messages"}]
+    //messages:[{type: Schema.Types.ObjectId, ref: "messages"}]
     
 },{versionKey: false });
 
