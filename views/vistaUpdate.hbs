@@ -14,6 +14,13 @@
   </a>
  </div>
 </div>
+<!-- Navbar on small screens -->
+<div id="navDemo" class="w3-bar-block w3-theme-d2 w3-hide w3-hide-large w3-hide-medium w3-large">
+  <a href="#" class="w3-bar-item w3-button w3-padding-large">Link 1</a>
+  <a href="/vistaBuscar" class="w3-bar-item w3-button w3-padding-large">Buscar</a>
+  <a href="/vistaUpdate" class="w3-bar-item w3-button w3-padding-large">Ajustes</a>
+  <a href="/logout" class="w3-bar-item w3-button w3-padding-large">Desconectar</a>
+</div>
 <!-- Page Container -->
 <div class="w3-container w3-content" style="max-width:1400px;margin-top:80px">    
   <!-- The Grid -->
@@ -38,21 +45,31 @@
         </div>
       </div>
       <br>
-      
-      
-      
-      <!-- Interests --> 
-      <div class="w3-card w3-round w3-white w3-hide-small">
+      <!-- Accordion -->
+      <div class="w3-card w3-round w3-white">
         <div class="menuLateral">
             <ul>
-                <li id="liName" class="liMenuSelect" onclick="changeForm(this.id)">Nombre</li>
-                <li id="liPasswd" class="liMenu" onclick="changeForm(this.id)">Contraseña</li>
-                <li id="liMood" class="liMenu" onclick="changeForm(this.id)">Estado</li>
-                <li id="liAvatar" class="liMenu" onclick="changeForm(this.id)">Avatar</li>
+                <li id="liName" class="liMenuSelect" onclick="changeForm(this.id)"><div>Nombre</div></li>
+                <li id="liPasswd" class="liMenu" onclick="changeForm(this.id)"><div>Contraseña</div></li>
+                <li id="liMood" class="liMenu" onclick="changeForm(this.id)"><div>Estado</div></li>
+                <li id="liAvatar" class="liMenu" onclick="changeForm(this.id)"><div>Avatar</div></li>
+            </ul>
+        </div>  
+      </div>
+      <br>
+      
+      
+      <!--<div class="w3-card w3-round w3-white w3-hide-small">
+        <div class="menuLateral">
+            <ul>
+                <li id="liName" class="liMenuSelect" onclick="changeForm(this.id)"><div>Nombre</div></li>
+                <li id="liPasswd" class="liMenu" onclick="changeForm(this.id)"><div>Contraseña</div></li>
+                <li id="liMood" class="liMenu" onclick="changeForm(this.id)"><div>Estado</div></li>
+                <li id="liAvatar" class="liMenu" onclick="changeForm(this.id)"><div>Avatar</div></li>
             </ul>
         </div>
       </div>
-      <br>
+      <br>-->
       
     <!-- End Left Column -->
     </div>
@@ -62,12 +79,12 @@
           <div id="forModifyPasswd" style="visibility: hidden; display:none;" class="w3-container w3-card w3-white w3-round marginLeftRigth15">
             <div class="form-group">
               <label for="oldPasswd">Antigua Contraseña</label>
-              <input name="oldPasswd" type="password" class="form-control" id="oldPasswd" aria-describedby="passwd" >
+              <input name="oldPasswd" type="password" class="form-control" id="oldPasswd" aria-describedby="passwd" placeholder="Contraseña">
               <hr>
               <label for="newPasswd">Contraseña</label>
-              <input name="newPasswd" type="password" class="form-control" id="newPasswd" aria-describedby="passwd" >
+              <input name="newPasswd" type="password" class="form-control" id="newPasswd" aria-describedby="passwd"  placeholder="Contraseña">
               <label for="repeatPasswd">Nueva Contraseña</label>
-              <input name="repeatPasswd" type="password" class="form-control" id="repeatPasswd" aria-describedby="passwd" >
+              <input name="repeatPasswd" type="password" class="form-control" id="repeatPasswd" aria-describedby="passwd" placeholder="Contraseña">
               <br>
               <button class="w3-button w3-theme-d1 w3-margin-bottom" onclick="updatePasswd()"><i class="fa fa-pencil"></i> Actualzar</button>
           </div>
@@ -76,7 +93,7 @@
         <div id="forModifyName" style="visibility: visible; display:block;" class="w3-container w3-card w3-white w3-round marginLeftRigth15">
             <div class="form-group">
                 <label for="nombre">Nombre Completo</label>
-                <input name="name" type="text" class="form-control" id="name" aria-describedby="nombre" placeholder="nombre Completo" value="{{{user.name}}}" >
+                <input name="name" type="text" class="form-control" id="name" aria-describedby="nombre" placeholder="Nombre Completo" value="{{{user.name}}}" >
                 <br>
                     
                 <button class="w3-button w3-theme-d1 w3-margin-bottom" onclick="updateName()"><i class="fa fa-pencil"></i> Actualzar</button>

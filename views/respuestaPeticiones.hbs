@@ -5,19 +5,19 @@
 
 {{#each user}}
     <div class="w3-container">
-         <div class="center"><span id={{this._id}} class="w3-center name" onclick="perfilPerson(this.id)">{{this.name}}</span></div>
-            {{#if this.avatar}}
-                <img src="data:image/jpg;base64,{{this.avatar}}" alt="Avatar" style="width:50%; margin-top:10px;"/>
+         <div class="center"><span id={{this.user._id}} class="w3-center name" onclick="perfilPerson(this.id)">{{this.name}}</span></div>
+            {{#if this.user.avatar}}
+                <img src="data:image/jpg;base64,{{this.user.avatar}}" alt="Avatar" style="width:50%; margin-top:10px;"/>
             {{else}}
                  <img src="/images/avatarDef.png" alt="Avatar" style="width:50%;margin-top:10px;">
             {{/if}} 
         
         <div class="w3-row w3-opacity">
             <div class="w3-half">
-                <button title="Aceptar amistad" id="{{this._id}}" class="w3-button w3-block w3-green w3-section" onclick="addFriend(this.id)"><i class="fa fa-check"></i></button>
+                <button title="Aceptar amistad" id="{{this.user._id}}" class="w3-button w3-block w3-green w3-section" onclick="addFriend(this.id)"><i class="fa fa-check"></i></button>
             </div>
             <div class="w3-half">
-                <button title="Negar amistad" id="{{this._id}}" class="w3-button w3-block w3-red w3-section" onclick="removeFriendPeding(this.id)"><i class="fa fa-remove"></i></button>
+                <button title="Negar amistad" id="{{this.user._id}}" class="w3-button w3-block w3-red w3-section" onclick="removeFriendPeding(this.id)"><i class="fa fa-remove"></i></button>
             </div>
         </div>
     </div>

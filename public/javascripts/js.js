@@ -1,8 +1,13 @@
 let isPerfil = false;
-function init() {
-  seeRequests();
-  searchAllMessages();
-  seeNotifications();
+
+/*----------------PRIVATE FUNCTION------------------------*/
+function formatName(name){
+  let string = name.split(" ");
+  for (let i = 0; i < string.length; i++) {
+      string[i] =string[i].substring(0,1).toUpperCase() + string[i].substring(1).toLowerCase();
+  } 
+  string = string.join(" ");
+  return string;
 }
 
 function date(){
@@ -26,17 +31,16 @@ function myFunction(id) {
   }
 }
 
-// Used to toggle the menu on smaller screens when clicking on the menu button
-function openNav() {
-  var x = document.getElementById("navDemo");
-  if (x.className.indexOf("w3-show") == -1) {
-    x.className += " w3-show";
-  } else {
-    x.className = x.className.replace(" w3-show", "");
-  }
-}
-
 function validation() {
+ /* Minimo 8 caracteres
+  Maximo 15
+  Al menos una letra mayúscula
+  Al menos una letra minucula
+  Al menos un dígito
+  No espacios en blanco
+  Al menos 1 caracter especial*/
+
+  let regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$@$!%*?&])([A-Za-z\d$@$!%*?&]|[^ ]){8,15}$/;
   let isOk = true;
   let name = document.getElementById("name");
   let email = document.getElementById("email");
@@ -63,11 +67,11 @@ function validation() {
     document.getElementById("message").innerHTML = "<span style=\"color:red\">Debes escribir un correo electrónico</span>";
     return isOk;
   }
-  if (passwd.value == "") {
-    passwd.style.borderColor = "red";
-    isOk = false;
-    document.getElementById("message").innerHTML = "<span style=\"color:red\">Indique una contraseña</span>";
-    return isOk;
+  if (passwd.value == "" || !regex.test(passwd.value)) {
+      passwd.style.borderColor = "red";
+      isOk = false;
+      document.getElementById("message").innerHTML = "<span style=\"color:red\">Indique una contraseña válida, debe contener entre 8 o 15 caracteres, con una mayúscula, una minúscula, un dígito y un carácter especial</span>";
+      return isOk;
   }
   if (passwdRepe.value == "" || passwdRepe.value != paswd.value) {
     passwdRepe.style.borderColor = "red";
@@ -84,10 +88,27 @@ function validation() {
   if (city.value == "") {
     city.style.borderColor = "red";
     isOk = false;
-    document.getElementById("message").innerHTML = "<span style=\"color:red\">Introduce la fecha de nacimiento</span>";
+    document.getElementById("message").innerHTML = "<span style=\"color:red\">Introduce una ciudad</span>";
     return isOk;
   }
   return isOk;
+}
+
+
+// Used to toggle the menu on smaller screens when clicking on the menu button
+function openNav() {
+  var x = document.getElementById("navDemo");
+  if (x.className.indexOf("w3-show") == -1) {
+    x.className += " w3-show";
+  } else {
+    x.className = x.className.replace(" w3-show", "");
+  }
+}
+/*-----------------Api--------------------*/
+function init() {
+  seeRequests();
+  searchAllMessages();
+  seeNotifications();
 }
 
 function updateName() {
@@ -108,7 +129,8 @@ function updateName() {
         document.getElementById("updateErrorName").innerHTML = res;
         document.getElementById("updateErrorName").style.display="";
         if (!res.includes("error")) {
-          document.getElementById("showName").innerHTML = name.value;
+          document.getElementById("showName").innerHTML = formatName(name.value);
+          name.value = formatName(name.value);
         }
       }
     });
@@ -116,6 +138,7 @@ function updateName() {
 }
 
 function updatePasswd() {
+  let regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$@$!%*?&])([A-Za-z\d$@$!%*?&]|[^ ]){8,15}$/;
   document.getElementById("updateErrorPasswd").style.display= "";
   let oldPasswd = document.getElementById("oldPasswd");
   let newPasswd = document.getElementById("newPasswd");
@@ -131,20 +154,25 @@ function updatePasswd() {
     repeatPasswd.style.borderColor = "red";
     document.getElementById("updateErrorPasswd").innerHTML = "<span id=\"errSpan\" class=\"errSpan error \">Los campos no pueden estar vacios</span>";
   } else {
-    if (newPasswd.value != repeatPasswd.value) {
-      repeatPasswd.style.borderColor = "red";
-      document.getElementById("updateErrorPasswd").innerHTML = "<span id=\"errSpan\" class=\"errSpan error \">Las contraseñas deben ser iguales</span>";
+    if (!regex.test(newPasswd.value)) {
+      newPasswd.style.borderColor = "red";
+      document.getElementById("updateErrorPasswd").innerHTML = "<span id=\"errSpan\" class=\"errSpan error \">Indique una contraseña válida, debe contener entre 8 o 15 caracteres, con una mayúscula, una minúscula, un dígito y un carácter especial</span>";
     } else {
-      let data = { oldPasswd: oldPasswd.value, newPasswd: newPasswd.value, repeatPasswd: repeatPasswd.value };
-      $.ajax({
-        type: "POST",
-        url: "updatePasswd",
-        data: data,
-        success: function (res) {
-          document.getElementById("updateErrorPasswd").innerHTML = res;
-          document.getElementById("updateErrorPasswd").style.display="";
-        }
-      });
+      if (newPasswd.value != repeatPasswd.value){
+          repeatPasswd.style.borderColor = "red";
+          document.getElementById("updateErrorPasswd").innerHTML = "<span id=\"errSpan\" class=\"errSpan error \">Las contraseñas deben ser iguales</span>";
+      }else{
+        let data = { oldPasswd: oldPasswd.value, newPasswd: newPasswd.value, repeatPasswd: repeatPasswd.value };
+        $.ajax({
+          type: "POST",
+          url: "updatePasswd",
+          data: data,
+          success: function (res) {
+            document.getElementById("updateErrorPasswd").innerHTML = res;
+            document.getElementById("updateErrorPasswd").style.display="";
+          }
+        });
+      }
     }
   }
 }

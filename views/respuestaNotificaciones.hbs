@@ -4,11 +4,16 @@
 {{else}}
     <span class="w3-badge w3-right w3-small w3-green"></span></button>
 {{/if}}
-     <div id="not" class="w3-dropdown-content w3-card-4 w3-bar-block" style="width:365px">
+     <div id="not" class="w3-dropdown-content w3-card-4 w3-bar-block" style="width:380px">
         {{#each not}}
-            <a onclick="readNotification('{{{this._id}}}');" class="w3-bar-item w3-button" onmouseover="show('{{{this._id}}}');" onmouseout="hide('{{{this._id}}}');">A {{{this.idUserOrigen.name}}} le gusta tu publicación
-                <span id="{{this._id}}" class="margin-left40px hidden" id="deleteNotification" onclick="deleteNotification('{{{this._id}}}')"><i class="fa fa-times" aria-hidden="true"></i>
+            <div class="notification" onclick="readNotification('{{{this.not._id}}}');" onmouseover="show('{{{this.not._id}}}');" onmouseout="hide('{{{this.not._id}}}');">
+                <span id="{{this.not._id}}" class="closeNotification hidden color607d8b2" id="deleteNotification" onclick="deleteNotification('{{{this.not._id}}}')"><i class="fa fa-times" aria-hidden="true"></i>
                 </span>
-            </a>
+                {{#if this.not.isFriend}}
+                    <span class="marginBottom10px">{{{this.name}}} ahora es tu amigo</span>
+                {{else}}
+                    <span class="marginBottom10px">{{{this.name}}} le ha gustado tu publicación</span>
+                {{/if}}
+             </div>
         {{/each}}
     </div>

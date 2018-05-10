@@ -5,34 +5,46 @@ body{
   background-attachment: fixed;
   background-size: 100%;
 }
+
 #updateErrorName , #updateErrorPasswd,#updateErrorAvatar, #updateErrorMood{
   text-align: center;
   padding-bottom: 5%; 
 }
+
 .error {
   color:red;
   width: auto;
+  text-align: center;
 }
 .correcto {
   color:green;
+  text-align: center;
 }
   
 .menuLateral{
-  padding-top:10px;
   padding-bottom: 0px;
+  width: 100%;
  }
 
-.menuLateral ul{
-  width: 100%;
-}
+ .menuLateral ul{
+  margin-left: -40px;
+  
+ }
 
-.menuLateral li{
+ .menuLateral li{
+  list-style:none; 
+ }
+
+.menuLateral li div{
   width: 100%;
   list-style:none;
+  box-sizing: border-box;
   border-radius: 4px;
   color:#000;
   height: 40px;
   cursor: pointer;
+  padding-left: 10px;
+  padding-top:7px;
 }
 
 .liMenu{
@@ -43,6 +55,10 @@ body{
 .liMenuSelect{
   font-size:15px; 
   font-weight: bold; 
+}
+
+.liMenuSelect div{
+  border: 2px solid #4d636f ;
 }
 
 .searchPeople{
@@ -79,7 +95,7 @@ body{
 .marginLeftRigth15{
   margin: 0px 15px;
 }
-  
+
 .center{
   margin: 2px auto;
 }
@@ -221,6 +237,14 @@ body{
   color:#ccc;
 }
 
+.color607d8b2{
+  color:#607d8b;
+}
+
+.color607d8b2:hover{
+  color:#333333;
+}
+
 .paddingBottom1px{
   padding-bottom: 1px;
 }
@@ -300,4 +324,38 @@ body{
   margin-left: auto;
   margin-right: auto;
   height: 27px;
+}
+
+.notification{
+  width: 100%;
+  height:auto;
+  text-align:left;
+  cursor: pointer;
+  position:relative;
+  padding-top:10px;
+  padding-left:20px;
+  padding-bottom: 10px;
+  font-size:14px;
+}
+
+.notification:hover{
+  background-color: #ccc;
+}
+
+.closeNotification{
+  position:absolute;
+  top:-0px;
+  left: 360px;
+}
+
+.marginLeft15px{
+  margin-left:15px;
+}
+
+.marginBottom10px{
+  margin-bottom: 10px;
+}
+
+.text-indent{
+  text-indent: initial;
 }

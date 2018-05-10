@@ -7,7 +7,8 @@ let notificationSchema = new Schema({
     idUserDest: {type: Schema.Types.ObjectId, ref: "users"},
     idMessage: {type: Schema.Types.ObjectId, ref: "messages"},
     date : {type: Date, default: Date.now},
-    read: {type:Boolean}
+    read: {type:Boolean},
+    isFriend: {type:Boolean}
 },{versionKey: false });
 
 let Notification = mongoose.model('notifications',notificationSchema);

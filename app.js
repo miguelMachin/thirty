@@ -9,8 +9,6 @@ var bodyParser = require('body-parser');
 const multer  = require('multer');
 const crypto = require('crypto');
 const session = require('express-session');
-//var csrf = require('csurf');
-//var fileUpload = require('express-fileupload');
 
 var index = require('./routes/index');
 //var users = require('./routes/users');
@@ -18,7 +16,6 @@ var index = require('./routes/index');
 var app = express();
 var io = socket_io();
 app.io = io;
-//app.use(csrf());
 // view engine setup
 
 var storage = multer.diskStorage({
@@ -39,7 +36,6 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('partial', path.join(__dirname, 'views/partial'));*/
 
 app.set('view engine', 'hbs');
-//app.use(fileUpload());
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(logger('dev'));
