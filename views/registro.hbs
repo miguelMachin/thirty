@@ -36,9 +36,9 @@
                 <label for="city">Ciudad</label>
                 <input name="city" type="text" class="form-control" id="city" aria-describedby="emailHelp" placeholder="Ciudad">
             </div>
-            <div class="form-check">
+            <div class="form-check formInterest">
                {{#each interests}}
-                    <input type="checkbox" name="interests" class="form-check-input checkbox-inline" value={{this}}>{{this}}  &nbsp &nbsp &nbsp &nbsp
+                    <span><input type="checkbox" name="interests" class="form-check-input" value={{this}}/>{{this}}</span>
                 {{/each}}
             </div>
             <button type="submit" class="w3-button w3-theme marginTop10px">Registrar</button> 

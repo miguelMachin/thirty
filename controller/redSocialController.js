@@ -8,8 +8,8 @@ const base64 = require('base-64');
 const crypto = require('crypto');
 const fs = require('fs');
 const moment = require('moment');
-const interests = ["Anime","Manga","Comunicaciones","Literaratura","Internet"];
-const country = {"SP":"España","UK":"Reino Unido","GER":"Alemania"};
+const interests = ["Anime","Manga","Comunicaciones","Literatura","Internet","Deportes","Música","Cine"];
+const country = {"SP":"España","UK":"Reino Unido","GER":"Alemania","JP":"Japón"};
 
 /*----------------PRIVATE FUNCTION------------- */
 function formatName(name){
@@ -161,7 +161,7 @@ function updateMood (req,res){
             res.render("respuestaVistaUpdate",{layout : false,message:"Problemas al intentar actualizar",status:"error"});
         }else{
             req.session.user.mood = mood;
-            res.render("respuestaVistaUpdate",{layout : false,message:"Actualizado Correctamennte",status:"correcto"});
+            res.render("respuestaVistaUpdate",{layout : false,message:"Actualizado Correctamente",status:"correcto"});
         }
     });
 }
@@ -185,7 +185,7 @@ function updatePasswd (req, res){
                             res.render("respuestaVistaUpdate",{layout : false,message:"Problemas al intentar actualizar",status:"error"});
                         }else{
                             req.session.user.passwd = crypto.createHash('md5').update(req.body.newPasswd).digest("hex");
-                            res.render("respuestaVistaUpdate",{layout : false,message:"Actualizado Correctamennte",status:"correcto"});
+                            res.render("respuestaVistaUpdate",{layout : false,message:"Actualizado Correctamente",status:"correcto"});
                         }
                     });
                 }else{
@@ -209,7 +209,7 @@ function updateAvatar(req,res){
         }
         else{
             //user.ext = user._id+"."+ext[1];;
-            res.render("respuestaVistaUpdate",{layout : false,message:"Actualizado Correctamennte",status:"correcto"});
+            res.render("respuestaVistaUpdate",{layout : false,message:"Actualizado Correctamente",status:"correcto"});
         }      
             
     });   
@@ -454,6 +454,7 @@ function searchAllMessages(req,res){
 }
 
 function searchAllMessagesPerfil(req,res){
+    console.log(req.body.id);
     User.findById(req.body.id).exec(function(err,user){
         if (err) console.log(err);
         let arrayMes = new Array();
@@ -464,11 +465,13 @@ function searchAllMessagesPerfil(req,res){
         ]}).populate("idUser").sort({date:-1}).exec(function(err,mes){
             if (err) console.log(err);
             let aux = "";
+            console.log(user.favorites);
             for (let i = 0; i < mes.length; i++) {
                 let isFavorite = false;
                 let myMessage = false;
-                if(isSome(mes[i],user.favorites)){
+                if(isSome(mes[i],req.session.user.favorites)){
                    isFavorite = true; 
+                   console.log("entre");
                 }
                 if(mes[i].idUser._id.equals(req.session.user._id)){
                     myMessage = true; 
@@ -513,17 +516,26 @@ function addFavorites(req,res){
             //User.findByIdAndUpdate(aux[1],{$push:{notification:id}},function(err,us){
                 //if (err) console.log(err);
                 socketApi.update("updateNotifications");
-                res.send({ok:"ok"});
            // })
-        })
-    })  
+        });
+        User.findById(req.session.user._id).exec(function(err,e){
+            if (err) console.log(err);
+            req.session.user = e;
+            res.send({ok:"ok"});
+        });
+    })
+    
 }
 
 function removeFavorites(req,res){
     let aux = req.body.id.split(".");
     User.findByIdAndUpdate(req.session.user._id,{$pull:{favorites:aux[0]}},function(err,user){
         if (err) console.log(err);
-        res.send({ok:"ok"});
+        User.findById(req.session.user._id).exec(function(err,e){
+            if (err) console.log(err);
+            req.session.user = e;
+            res.send({ok:"ok"});
+        });
     }) 
 }
 

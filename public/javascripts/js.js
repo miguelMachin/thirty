@@ -461,7 +461,7 @@ function addMessage() {
   let imgUpload = document.getElementById("imgUpload");
   let validate = true;
   if (text.value == "" && imgUpload.value == "") {   
-    document.getElementById("erroText").innerHTML = "Debe contener algo el mensaje";
+    document.getElementById("erroText").innerHTML = "La publicación no puede estar vacía";
     text.style.borderColor = "red";
     document.getElementById("uploadFile").style.borderColor = "red";
   } else {
@@ -588,8 +588,27 @@ function hide(id) {
   document.getElementById(id).style.visibility = "hidden";
 }
 
-function deleteMessage(id) {
+function showModalConfir(id) {
   console.log(id);
+  /*let data = { id: id }
+  $.ajax({
+    type: "POST",
+    url: "deleteMessage",
+    data: data,
+    success: function (res) {
+      if (res.ok == "ok") {
+        searchAllMessages();
+      }
+    }
+  });*/
+  //$('#acceptModal').attr("data",id);
+  document.getElementById("acceptModal").setAttribute("dataId",id)
+  $('#modalCon').modal();
+  
+}
+
+function deleteMessage(obj){
+  let id = obj.getAttribute("dataId");
   let data = { id: id }
   $.ajax({
     type: "POST",
@@ -601,6 +620,7 @@ function deleteMessage(id) {
       }
     }
   });
+  $('#modalCon').modal("hide");
 }
 
 function showImage(obj){
@@ -609,8 +629,8 @@ function showImage(obj){
   lightbox.className = "lightbox";
   lightbox.appendChild(document.createElement("DIV")).setAttribute("id", "modal");
   let modal = document.getElementById("modal");
-  modal.className = "modal";
-  modal.innerHTML = "<img id=\"imgModal\"  class=\"imgModal\"src=\""+obj+"\"/>";
+  modal.className = "modalShowImage";
+  modal.innerHTML = "<img id=\"imgModal\" class=\"imgModal\" src=\""+obj+"\"/>";
   modal.innerHTML += "<div onclick=\"closeModal();\" id=\"closeModal\" class=\"closeModal colorccc\"><i class=\"fa fa-times\" aria-hidden=\"true\"></i></div>";
   let imgModal = document.getElementById("imgModal");
   modal.style.marginTop = "-"+(imgModal.height/2)+"px";

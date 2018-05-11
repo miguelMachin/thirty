@@ -30,7 +30,7 @@
       <!-- Profile -->
       <div class="w3-card w3-round w3-white">
        <div class="w3-container paddingtop20">
-         <p class="w3-center">
+         <p class="w3-center" id="img">
             {{#if user.avatar}}
                 <img title="Ampliar imagen" src="data:image/jpg;base64,{{user.avatar}}" class="w3-circle avatar pointer" onclick="showImage(this.src)" alt="Avatar"/>
             {{else}}
@@ -111,7 +111,7 @@
              <div id="updateErrorMood" style="display:none;"><span id="errSpan" class="errSpan error"></span></div>
         </div>
         <div id="formModifyAvatar" style="visibility: hidden; display:none;" class="w3-container w3-card w3-white w3-round marginLeftRigth15">
-               <form enctype="multipart/form-data" id="formUpload">
+               <form enctype="multipart/form-data" id="formUpload" onsubmit="event.preventDefault()">
                  <div class="form-group">
                     <label for="exampleInputPassword1">Avatar</label>
                     <input id="avatar" name="img" type="file"   accept=".jpeg, .jpg" class="form-control">

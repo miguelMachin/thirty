@@ -84,11 +84,11 @@
         <div class="w3-col m12">
           <div class="w3-card w3-round w3-white">
             <div class="w3-container w3-padding">
-              <form id="formMessage" style="margin-top:5px">
+              <form id="formMessage" style="margin-top:5px" onsubmit="event.preventDefault()">
                   <textarea id="text" name="text" class="form-control noResize textArea" rows="2" placeholder="Escribe aquí"></textarea>
                   <div id="uploadFile" class="uploadFile">
                     <label>
-                      <i title="Añadir imagen" class="fa fa-picture-o color607d8b" aria-hidden="true"></i>
+                      <i title="Añadir imagen" class="fa fa-paperclip color607d8b" aria-hidden="true"></i>
                       <input id="imgUpload" type="file"  accept=".jpeg, .jpg" name="img" class="displayNone"/>
                   </label>
                   </div>
