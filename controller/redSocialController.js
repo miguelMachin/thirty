@@ -141,7 +141,7 @@ function updateName (req,res){
             res.render("respuestaVistaUpdate",{layout : false,message:"Problemas al intentar actualizar",status:"error"});
         }else{
             req.session.user.name = formatName(req.body.name);
-            res.render("respuestaVistaUpdate",{layout : false,message:"Actualizado Correctamennte",status:"correcto"});
+            res.render("respuestaVistaUpdate",{layout : false,message:"Actualizado Correctamente",status:"correcto"});
         }
     });
 }
