@@ -418,6 +418,7 @@ function addFriend(id) {
 }
 
 function perfilPerson(id) {
+  isPerfil = true;
   let data = { id: id };
   $.ajax({
     type: "POST",
@@ -515,7 +516,9 @@ function addFavorites(id) {
       if (res.ok == "ok") {
         if (!isPerfil) {
           searchAllMessages();
+          console.log("entre");
         } else {
+          console.log("entre2");
           searchAllMessagesPerfil(aux[1]);
         }
       }
